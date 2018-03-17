@@ -16,6 +16,7 @@
 		F63176B6203C892B0076C098 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F63176B4203C892B0076C098 /* LaunchScreen.storyboard */; };
 		F63176C1203C892B0076C098 /* Login_ScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63176C0203C892B0076C098 /* Login_ScreenTests.swift */; };
 		F63176CE203C8B8D0076C098 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63176CD203C8B8D0076C098 /* LoginController.swift */; };
+		F6596636205D9F290077EA1B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6596635205D9F290077EA1B /* Extensions.swift */; };
 		F6948F67203CCE6000E9E9CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F6948F66203CCE6000E9E9CD /* GoogleService-Info.plist */; };
 		F69939AF2041163C006795D7 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69939AE2041163C006795D7 /* LoginController+handlers.swift */; };
 		F6BAD536203E3A6B003F7DE9 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BAD535203E3A6B003F7DE9 /* NewMessageController.swift */; };
@@ -50,6 +51,7 @@
 		F63176C0203C892B0076C098 /* Login_ScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_ScreenTests.swift; sourceTree = "<group>"; };
 		F63176C2203C892B0076C098 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F63176CD203C8B8D0076C098 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		F6596635205D9F290077EA1B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F6948F66203CCE6000E9E9CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F69939AE2041163C006795D7 /* LoginController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		F6BAD535203E3A6B003F7DE9 /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 		F63176AA203C892B0076C098 /* Login Screen */ = {
 			isa = PBXGroup;
 			children = (
+				F6596634205D9F190077EA1B /* Helpers */,
 				F6BAD537203E4236003F7DE9 /* Model */,
 				F63176CC203C8B4A0076C098 /* Controller */,
 				F63176AB203C892B0076C098 /* AppDelegate.swift */,
@@ -149,6 +152,14 @@
 				F6BAD535203E3A6B003F7DE9 /* NewMessageController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		F6596634205D9F190077EA1B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F6596635205D9F290077EA1B /* Extensions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		F6BAD537203E4236003F7DE9 /* Model */ = {
@@ -322,6 +333,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Login Screen/Pods-Login Screen-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -329,6 +341,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -383,6 +396,7 @@
 				F63176CE203C8B8D0076C098 /* LoginController.swift in Sources */,
 				F6EEAE83203E51F400A03DA4 /* UserNSObject.swift in Sources */,
 				F63176AC203C892B0076C098 /* AppDelegate.swift in Sources */,
+				F6596636205D9F290077EA1B /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

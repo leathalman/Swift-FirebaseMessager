@@ -10,6 +10,7 @@ target 'Login Screen' do
 pod'Firebase/Database'
 pod'Firebase/Auth'
 pod'Firebase/Storage'
+pod 'Kingfisher'
 
 
   target 'Login ScreenTests' do

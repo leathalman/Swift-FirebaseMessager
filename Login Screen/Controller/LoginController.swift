@@ -68,44 +68,7 @@ class LoginController: UIViewController {
             //successfully logged in user
             self.dismiss(animated: true, completion: nil)
         })
-        
-        
-    }
-    
-    @objc func handleRegister() {
-        guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text
-            else {
-                print("Form is not valid!")
-                return
-        }
-        
-        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-            
-            if error != nil {
-                print("error")
-                return
-            }
-            
-            guard (user?.uid) != nil else {
-                return
-            }
-            
-            //successfully authenticated user
-            let ref = Database.database().reference(fromURL: "https://chat-login-92eaf.firebaseio.com/")
-            let usersReference = ref.child("users").child((user?.uid)!)
-            let values = ["name":name, "email": email]
-            usersReference.updateChildValues(values, withCompletionBlock: { (error2, ref) in
-                
-                if error2 != nil {
-                print("error2")
-                return
-                }
-                
-                self.dismiss(animated: true, completion: nil)
-                print("Saved User successfully into firebase")
-            })
-            
-        }
+       
     }
     
     let nameTextField: UITextField = {

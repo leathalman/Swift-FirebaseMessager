@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0920"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0AA81D68863C7EB3280C8900FCADE63F"
+               BlueprintIdentifier = "C29F91E9A5B6699E367588132AF82B79"
                BuildableName = "Pods_Login_Screen.framework"
                BlueprintName = "Pods-Login Screen"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -47,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0AA81D68863C7EB3280C8900FCADE63F"
+            BlueprintIdentifier = "C29F91E9A5B6699E367588132AF82B79"
             BuildableName = "Pods_Login_Screen.framework"
             BlueprintName = "Pods-Login Screen"
             ReferencedContainer = "container:Pods.xcodeproj">

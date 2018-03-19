@@ -33,7 +33,9 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             let imageName = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child("profile_Images").child("\(imageName).png")
             
-            if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
+            //use JPEG compression to help load times for profile pictures
+            //WILL CRASH APP IF NO IMAGE IS AVAILABLE: using !
+            if let uploadData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.1) {
                 
                 let uid = user?.uid
                 
@@ -65,6 +67,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                 return
             }
             
+            self.messagesController?.navigationItem.title = values["name"] as? String
             self.dismiss(animated: true, completion: nil)
             print("Saved User successfully into firebase")
         })
@@ -94,6 +97,8 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         if let selectedImage = selectedImageFromPicker {
             profileImageView.image = selectedImage
         }
+        
+        self.messagesController?.fetchUserAndSetupNavBarTitle()
         
         dismiss(animated: true, completion: nil)
     }

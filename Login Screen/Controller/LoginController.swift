@@ -9,7 +9,9 @@
 import UIKit
 import Firebase
 
-class LoginController: UIViewController {
+class LoginController: UIViewController, UITextFieldDelegate {
+    
+    var messagesController: MessagesController?
     
      let inputContainerView : UIView = {
         let view = UIView()
@@ -66,6 +68,8 @@ class LoginController: UIViewController {
             }
             
             //successfully logged in user
+            
+            self.messagesController?.fetchUserAndSetupNavBarTitle()
             self.dismiss(animated: true, completion: nil)
         })
        
@@ -107,6 +111,13 @@ class LoginController: UIViewController {
         tf.returnKeyType = .continue
         return tf
     }()
+    
+    func textFieldShouldReturn(_ passwordTextField: UITextField) -> Bool {
+        
+        passwordTextField.resignFirstResponder()
+        handleLoginRegister()
+        return true
+    }
     
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -165,6 +176,10 @@ class LoginController: UIViewController {
         view.addSubview(loginRegisterButton)
         view.addSubview(profileImageView)
         view.addSubview(loginRegisterSegmentedControl)
+        
+        self.nameTextField.delegate = self
+        self.emailTextField.delegate = self
+        self.passwordTextField.delegate = self
         
         setupInputContainerView()
         setupLoginRegisterButton()

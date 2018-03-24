@@ -9,9 +9,6 @@
 import UIKit
 import Firebase
 
-//Was used for earlier builds
-//import Kingfisher
-
 class NewMessageController: UITableViewController {
 
     let cellId = "cellId"
@@ -25,7 +22,7 @@ class NewMessageController: UITableViewController {
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
 
         fetchUsers()
-    
+        
     }
     
     func fetchUsers() {
@@ -38,9 +35,13 @@ class NewMessageController: UITableViewController {
                     let name = value["name"] as? String ?? "Name not found"
                     let email = value["email"] as? String ?? "Email not found"
                     let profileImageUrl = value["profileImageUrl"] as? String ?? "ImageUrl not found"
+                    let uid = child.key //the uid of each user
                     user.name = name
                     user.email = email
                     user.profileImageUrl = profileImageUrl
+                    user.uid = uid
+                    print("Uid key = \(user.uid ?? "uid not fetched")")
+                    
                     //did it work?
                     print("fetched users successfully")
                     self.users.append(user)
@@ -48,6 +49,26 @@ class NewMessageController: UITableViewController {
                 }
             }
         }
+
+        //fetchUid()
+    }
+    
+    func fetchUid() {
+        let ref = Database.database().reference()
+        let usersRef = ref.child("users")
+        let queryRef = usersRef.queryOrdered(byChild: "uid")
+        
+        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            for snap in snapshot.children {
+                let userSnap = snap as! DataSnapshot
+                let user = myUser()
+                let uid = userSnap.key //the uid of each user
+                user.uid = uid
+                print("uid key = \(uid)")
+                self.users.append(user)
+                DispatchQueue.main.async { self.tableView.reloadData() }
+            }
+        })
     }
     
     @objc func handleCancel() {
@@ -71,19 +92,19 @@ class NewMessageController: UITableViewController {
 
             cell.profileImageView.loadImageUsingCacheWithUrlString(urlString: imageURL)
             
-            //            let url = URL(string: imageURL)
-//            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-//
-//                if error != nil {
-//                    print(error!)
-//                    return
-//                }
-//
-//                DispatchQueue.main.async {
-//                    cell.profileImageView.image = UIImage(data:data!)
-//
-//                }
-//            }).resume()
+            let url = URL(string: imageURL)
+            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+
+                if error != nil {
+                    print(error!)
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    cell.profileImageView.image = UIImage(data:data!)
+
+                }
+            }).resume()
         }
 
         return cell
@@ -92,6 +113,17 @@ class NewMessageController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 72
     }
+    
+    var messagesController: MessagesController?
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dismiss(animated: true, completion: nil)
+        print("User Selection Menu Dismissed")
+        let user = self.users[indexPath.row]
+        self.messagesController?.showChatControllerForUser(user: user)
+        print()
+    }
+    
 }
 class UserCell: UITableViewCell {
     

@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 class MessagesController: UITableViewController {
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,6 +26,7 @@ class MessagesController: UITableViewController {
     
     @objc func handleNewMessage() {
         let newMessageController = NewMessageController()
+        newMessageController.messagesController = self
         let navController = UINavigationController(rootViewController: newMessageController)
         present(navController, animated: true, completion: nil)
     }
@@ -50,14 +51,25 @@ class MessagesController: UITableViewController {
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 self.navigationItem.title = dictionary["name"] as? String
-        
+                
+//                let navButton =  UIButton(type: .custom)
+//                navButton.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
+//                //used for showing area of box
+//                navButton.backgroundColor = UIColor.clear
+//                navButton.setTitleColor(UIColor.black, for: .normal)
+//                navButton.setTitle(dictionary["name"] as? String, for: .normal)
+//                navButton.addTarget(self, action: #selector(self.showChatController), for: .touchUpInside)
+//                self.navigationItem.titleView = navButton
+                
             }
         }, withCancel: nil)
+        
     }
     
-    func setupNavBarWithUser(user: User) {
-        self.navigationItem.title = user.displayName
-        
+    @objc func showChatControllerForUser(user: myUser) {
+        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        chatLogController.user = user
+        navigationController?.pushViewController(chatLogController, animated: true)
     }
     
     @objc func handleLogout() {

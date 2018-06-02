@@ -10,8 +10,7 @@ target 'Login Screen' do
 pod'Firebase/Database'
 pod'Firebase/Auth'
 pod'Firebase/Storage'
-pod 'Kingfisher'
-
+pod'Firebase/Core'
 
   target 'Login ScreenTests' do
     inherit! :search_paths

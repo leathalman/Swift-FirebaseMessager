@@ -25,7 +25,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                 return
             }
             
-            guard (user?.uid) != nil else {
+            guard (user?.user.uid) != nil else {
                 return
             }
             
@@ -37,7 +37,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             //WILL CRASH APP IF NO IMAGE IS AVAILABLE: using !
             if let uploadData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.1) {
                 
-                let uid = user?.uid
+                let uid = user?.user.uid
                 
                 storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                     
@@ -46,16 +46,23 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                         return
                     }
                     
-                    if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
-                    
-                        let values = ["name":name, "email": email, "profileImageUrl": profileImageUrl]
+                    storageRef.downloadURL { url, error in
+                        if let error = error {
+                            print(error)
+                        } else {
+                            let profileImageUrl = url?.absoluteString
+                            let values = ["profileImageUrl": profileImageUrl]
+                            self.registerUerIntoDatabaseWithUID(uid: uid!, values: values as [String : AnyObject])
+                            print(profileImageUrl ?? "profile url")
+                        }
+                    }
+                        let values = ["name":name, "email": email]
                         self.registerUerIntoDatabaseWithUID(uid: uid!, values: values as [String : AnyObject])
   
-                    }
-                })
+                    })
+                }
             }
         }
-    }
     
     private func registerUerIntoDatabaseWithUID(uid: String, values: [String: AnyObject]) {
         let ref = Database.database().reference(fromURL: "https://chat-login-92eaf.firebaseio.com/")

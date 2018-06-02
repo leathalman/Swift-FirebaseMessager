@@ -27,16 +27,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         textField.delegate = self
         return textField
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-            
+        
         collectionView?.backgroundColor = UIColor.white
         
         setupInputComponets()
         
     }
-
+    
     func setupInputComponets() {
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,8 +62,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         sendButton.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
-    
-    
+        
+        
         containerView.addSubview(inputTextField)
         //contraints: x, y, w, h
         inputTextField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
@@ -87,9 +87,20 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
         
-        let toId = user?.uid!
-        let senderId = Auth.auth().currentUser?.uid
-        let values = ["text": inputTextField.text!, "to_Id": toId, "sender_Id": senderId]
+        let toId = user!.uid!
+        let senderId = Auth.auth().currentUser!.uid
+        
+        let timestamp = (NSDate().timeIntervalSince1970)
+        let timeInterval = timestamp
+        print("time interval is \(timeInterval)")
+        let date = NSDate(timeIntervalSince1970: timeInterval)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:a MMMM, dd yyyy"
+        dateFormatter.timeZone = NSTimeZone(name: "EST") as TimeZone?
+        let dateString = dateFormatter.string(from: date as Date)
+        print("formatted date is =  \(dateString)")
+        
+        let values = ["text": inputTextField.text!, "to_Id": toId, "sender_Id": senderId, "timestamp": dateString]
         childRef.updateChildValues(values)
     }
     

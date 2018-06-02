@@ -22,6 +22,7 @@
 		F69939AF2041163C006795D7 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69939AE2041163C006795D7 /* LoginController+handlers.swift */; };
 		F6BAD536203E3A6B003F7DE9 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BAD535203E3A6B003F7DE9 /* NewMessageController.swift */; };
 		F6EEAE83203E51F400A03DA4 /* UserNSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEAE82203E51F400A03DA4 /* UserNSObject.swift */; };
+		F6FF9C8520C3049900AE6E4C /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FF9C8420C3049900AE6E4C /* Message.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		F69939AE2041163C006795D7 /* LoginController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		F6BAD535203E3A6B003F7DE9 /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		F6EEAE82203E51F400A03DA4 /* UserNSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNSObject.swift; sourceTree = "<group>"; };
+		F6FF9C8420C3049900AE6E4C /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				F6EEAE82203E51F400A03DA4 /* UserNSObject.swift */,
+				F6FF9C8420C3049900AE6E4C /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -394,6 +397,7 @@
 				F632FBB52060303F00330C94 /* ChatLogController.swift in Sources */,
 				F6BAD536203E3A6B003F7DE9 /* NewMessageController.swift in Sources */,
 				F63176AE203C892B0076C098 /* MessagesController.swift in Sources */,
+				F6FF9C8520C3049900AE6E4C /* Message.swift in Sources */,
 				F69939AF2041163C006795D7 /* LoginController+handlers.swift in Sources */,
 				F63176CE203C8B8D0076C098 /* LoginController.swift in Sources */,
 				F6EEAE83203E51F400A03DA4 /* UserNSObject.swift in Sources */,

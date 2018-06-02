@@ -10,17 +10,17 @@ import UIKit
 import Firebase
 
 class NewMessageController: UITableViewController {
-
+    
     let cellId = "cellId"
     var users = [myUser]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
-
+        
         fetchUsers()
         
     }
@@ -49,7 +49,7 @@ class NewMessageController: UITableViewController {
                 }
             }
         }
-
+        
         //fetchUid()
     }
     
@@ -89,24 +89,24 @@ class NewMessageController: UITableViewController {
         cell.detailTextLabel?.text = user.email
         
         if let imageURL = user.profileImageUrl {
-
+            
             cell.profileImageView.loadImageUsingCacheWithUrlString(urlString: imageURL)
             
             let url = URL(string: imageURL)
             URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-
+                
                 if error != nil {
                     print(error!)
                     return
                 }
-
+                
                 DispatchQueue.main.async {
                     cell.profileImageView.image = UIImage(data:data!)
-
+                    
                 }
             }).resume()
         }
-
+        
         return cell
     }
     
@@ -132,8 +132,8 @@ class UserCell: UITableViewCell {
         
         textLabel?.frame = CGRect(x: 64, y: textLabel!.frame.origin.y - 2, width: textLabel!.frame.width, height: textLabel!.frame.height)
         detailTextLabel?.frame = CGRect(x: 64, y: detailTextLabel!.frame.origin.y + 2, width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height)
-
-    
+        
+        
     }
     
     let profileImageView: UIImageView = {

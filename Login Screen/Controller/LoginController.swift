@@ -13,7 +13,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     var messagesController: MessagesController?
     
-     let inputContainerView : UIView = {
+    let inputContainerView : UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +49,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
             handleLogin()
         } else {
-        handleRegister()
+            handleRegister()
         }
     }
     
@@ -72,7 +72,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
             self.messagesController?.fetchUserAndSetupNavBarTitle()
             self.dismiss(animated: true, completion: nil)
         })
-       
+        
     }
     
     let nameTextField: UITextField = {
@@ -268,7 +268,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         loginRegisterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
-
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }

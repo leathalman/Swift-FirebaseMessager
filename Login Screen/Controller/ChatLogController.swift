@@ -95,7 +95,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         print("time interval is \(timeInterval)")
         let date = NSDate(timeIntervalSince1970: timeInterval)
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:a MMMM, dd yyyy"
+        dateFormatter.dateFormat = "hh:mm:s a MMMM, dd yyyy"
         dateFormatter.timeZone = NSTimeZone(name: "EST") as TimeZone?
         let dateString = dateFormatter.string(from: date as Date)
         print("formatted date is =  \(dateString)")

@@ -91,16 +91,17 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         let senderId = Auth.auth().currentUser!.uid
         
         let timestamp = (NSDate().timeIntervalSince1970)
-        let timeInterval = timestamp
-        print("time interval is \(timeInterval)")
-        let date = NSDate(timeIntervalSince1970: timeInterval)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm:s a MMMM, dd yyyy"
-        dateFormatter.timeZone = NSTimeZone(name: "EST") as TimeZone?
-        let dateString = dateFormatter.string(from: date as Date)
-        print("formatted date is =  \(dateString)")
+//        let timeInterval = timestamp
+//        print("time interval is \(timeInterval)")
+//        let date = NSDate(timeIntervalSince1970: timeInterval)
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "hh:mm:s a"
+//       dateFormatter.dateFormat = "hh:mm:s a MMMM, dd yyyy"
+//        dateFormatter.timeZone = NSTimeZone(name: "EST") as TimeZone?
+//        let dateString = dateFormatter.string(from: date as Date)
+//        print("formatted date is =  \(dateString)")
         
-        let values = ["text": inputTextField.text!, "to_Id": toId, "sender_Id": senderId, "timestamp": dateString]
+        let values = ["text": inputTextField.text!, "to_Id": toId, "sender_Id": senderId, "timestamp": timestamp] as [String : Any]
         childRef.updateChildValues(values)
     }
     

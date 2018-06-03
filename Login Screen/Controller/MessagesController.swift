@@ -9,6 +9,31 @@
 import UIKit
 import Firebase
 
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
+}
+
+
 class MessagesController: UITableViewController {
     
     let cellId = "cellId"
@@ -28,6 +53,7 @@ class MessagesController: UITableViewController {
     }
     
     var messages = [Message]()
+    var messagesDictionary = [String: Message]()
     
     func observeMessages() {
         let ref = Database.database().reference().child("messages")
@@ -38,14 +64,21 @@ class MessagesController: UITableViewController {
                 message.text = dictionary["text"] as? String ?? "Text not found"
                 message.senderId = dictionary["sender_Id"] as? String ?? "Sender not found"
                 message.toId = dictionary["to_Id"] as? String ?? "Reciever not found"
-                message.timestamp = dictionary["timestamp"] as? String ?? "Text not found"
-                self.messages.append(message)
+                message.timestamp = dictionary["timestamp"] as? NSNumber 
                 
+                if let toId = message.toId {
+                    self.messagesDictionary[toId] = message
+                    
+                    self.messages = Array(self.messagesDictionary.values)
+                    self.messages.sort(by: { (message1, message2) -> Bool in
+                        
+                        return message1.timestamp?.int32Value > message2.timestamp?.int32Value
+                    })
+                }
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
             }
-            
             
         }, withCancel: nil)
     }

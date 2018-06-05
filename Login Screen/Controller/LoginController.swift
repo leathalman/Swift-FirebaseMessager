@@ -24,13 +24,13 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     let loginRegisterButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(r:80, g:101, b:161)
-        button.setTitle("Register", for: .normal)
+        button.backgroundColor = UIColor(r:49, g:137, b:123)
+        button.setTitle("Register", for: UIControl.State.normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitleColor(UIColor.white, for: UIControl.State.normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         
-        button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleLoginRegister), for: UIControl.Event.touchUpInside)
         
         return button
     }()
@@ -121,7 +121,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "placeholder")
+        imageView.image = UIImage(named: "defaultPI")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         
@@ -138,13 +138,13 @@ class LoginController: UIViewController, UITextFieldDelegate {
         sc.translatesAutoresizingMaskIntoConstraints = false
         sc.tintColor = UIColor.white
         sc.selectedSegmentIndex = 1
-        sc.addTarget(self, action: #selector(handleLoginRegisterChange), for: .valueChanged)
+        sc.addTarget(self, action: #selector(handleLoginRegisterChange), for: UIControl.Event.valueChanged)
         return sc
     }()
     
     @objc func handleLoginRegisterChange(){
         let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
-        loginRegisterButton.setTitle(title, for: .normal)
+        loginRegisterButton.setTitle(title, for: UIControl.State.normal)
         print(loginRegisterSegmentedControl.selectedSegmentIndex)
         
         //change height of inputContainerView
@@ -169,7 +169,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(r:61, g: 91, b: 151)
+        view.backgroundColor = UIColor(r:46, g: 46, b: 46)
         hideKeyboardWhenTappedAround()
         
         view.addSubview(inputContainerView)

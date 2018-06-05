@@ -50,10 +50,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         let sendButton = UIButton(type: .system)
-        sendButton.setTitle("Send", for: .normal)
+        sendButton.setTitle("Send", for: UIControl.State.normal)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         //adds target to button
-        sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
+        sendButton.addTarget(self, action: #selector(handleSend), for: UIControl.Event.touchUpInside)
         
         
         containerView.addSubview(sendButton)
@@ -91,18 +91,23 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         let senderId = Auth.auth().currentUser!.uid
         
         let timestamp = (NSDate().timeIntervalSince1970)
-//        let timeInterval = timestamp
-//        print("time interval is \(timeInterval)")
-//        let date = NSDate(timeIntervalSince1970: timeInterval)
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "hh:mm:s a"
-//       dateFormatter.dateFormat = "hh:mm:s a MMMM, dd yyyy"
-//        dateFormatter.timeZone = NSTimeZone(name: "EST") as TimeZone?
-//        let dateString = dateFormatter.string(from: date as Date)
-//        print("formatted date is =  \(dateString)")
-        
+
         let values = ["text": inputTextField.text!, "to_Id": toId, "sender_Id": senderId, "timestamp": timestamp] as [String : Any]
-        childRef.updateChildValues(values)
+        
+        childRef.updateChildValues(values) { (error, ref ) in
+            if error != nil {
+                print(error ?? "error updating child values")
+                return
+            }
+            
+            let userMessagesRef = Database.database().reference().child("user-messages").child(senderId)
+            
+            let messageId = childRef.key
+            userMessagesRef.updateChildValues([messageId: 1])
+            
+            let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toId)
+            recipientUserMessagesRef.updateChildValues([messageId: 1])
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

@@ -49,11 +49,52 @@ class MessagesController: UITableViewController {
         
         checkIfUserIsLoggedIn()
         
-        observeMessages()
     }
     
     var messages = [Message]()
     var messagesDictionary = [String: Message]()
+    
+    func observeUserMessages() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        let ref = Database.database().reference().child("user-messages").child(uid)
+        ref.observe(.childAdded, with: { (snapshot) in
+
+            let messageId = snapshot.key
+            let messagesReference = Database.database().reference().child("messages").child(messageId)
+            
+            messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    let message = Message()
+                    message.text = dictionary["text"] as? String ?? "Text not found"
+                    message.senderId = dictionary["sender_Id"] as? String ?? "Sender not found"
+                    message.toId = dictionary["to_Id"] as? String ?? "Reciever not found"
+                    message.timestamp = dictionary["timestamp"] as? NSNumber
+                    
+                    if let toId = message.toId {
+                        self.messagesDictionary[toId] = message
+                        
+                        self.messages = Array(self.messagesDictionary.values)
+                        self.messages.sort(by: { (message1, message2) -> Bool in
+                            
+                            return message1.timestamp?.int32Value > message2.timestamp?.int32Value
+                        })
+                    }
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
+                
+            }, withCancel: { (nil) in
+                
+            })
+            
+        }, withCancel: nil)
+    
+        }
     
     func observeMessages() {
         let ref = Database.database().reference().child("messages")
@@ -101,7 +142,7 @@ class MessagesController: UITableViewController {
         return 72
     }
     
-    override func didMove(toParentViewController parent: UIViewController?) {
+    override func didMove(toParent parent: UIViewController?) {
         checkIfUserIsLoggedIn()
     }
     
@@ -124,6 +165,12 @@ class MessagesController: UITableViewController {
     }
     
     func fetchUserAndSetupNavBarTitle() {
+        messages.removeAll()
+        messagesDictionary.removeAll()
+        tableView.reloadData()
+        
+        observeUserMessages()
+        
         guard let uid = Auth.auth().currentUser?.uid else {
             //for some reason uid = nil
             return
@@ -132,16 +179,6 @@ class MessagesController: UITableViewController {
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 self.navigationItem.title = dictionary["name"] as? String
-                
-                //                let navButton =  UIButton(type: .custom)
-                //                navButton.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-                //                //used for showing area of box
-                //                navButton.backgroundColor = UIColor.clear
-                //                navButton.setTitleColor(UIColor.black, for: .normal)
-                //                navButton.setTitle(dictionary["name"] as? String, for: .normal)
-                //                navButton.addTarget(self, action: #selector(self.showChatController), for: .touchUpInside)
-                //                self.navigationItem.titleView = navButton
-                
             }
         }, withCancel: nil)
         

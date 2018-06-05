@@ -34,7 +34,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             
             //use JPEG compression to help load times for profile pictures
             //WILL CRASH APP IF NO IMAGE IS AVAILABLE: using !
-            if let uploadData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.1) {
+            if let uploadData = self.profileImageView.image!.jpegData(compressionQuality: 0.1) {
                 
                 let uid = user?.user.uid
                 
@@ -90,7 +90,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         present(picker, animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         var selectedImageFromPicker: UIImage?
         

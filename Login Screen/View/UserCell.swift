@@ -28,20 +28,12 @@ class UserCell: UITableViewCell {
         }
     }
     
-    private func setupNameAndProfileImage() {
-        let chatPartnerId: String?
-        
-        if message?.senderId == Auth.auth().currentUser?.uid {
-            chatPartnerId = message?.toId
-        } else {
-            chatPartnerId = message?.senderId
-        }
-        
-        if let id = chatPartnerId {
+    private func setupNameAndProfileImage() {        
+        if let id = message?.chatPartnerId() {
             let ref = Database.database().reference().child("users").child(id)
             ref.observeSingleEvent(of: .value, with: { (DataSnapshot)
                 in
-                print(DataSnapshot)
+//                print(DataSnapshot)
                 if let dictionary = DataSnapshot.value as? [String: AnyObject] {
                     self.textLabel?.text = dictionary["name"] as? String
                     

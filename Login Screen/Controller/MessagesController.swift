@@ -37,7 +37,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 class MessagesController: UITableViewController {
     
     let cellId = "cellId"
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,7 +61,7 @@ class MessagesController: UITableViewController {
         
         let ref = Database.database().reference().child("user-messages").child(uid)
         ref.observe(.childAdded, with: { (snapshot) in
-
+            
             let messageId = snapshot.key
             let messagesReference = Database.database().reference().child("messages").child(messageId)
             
@@ -93,8 +93,8 @@ class MessagesController: UITableViewController {
             })
             
         }, withCancel: nil)
-    
-        }
+        
+    }
     
     func observeMessages() {
         let ref = Database.database().reference().child("messages")
@@ -130,7 +130,7 @@ class MessagesController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
-    
+        
         let message = messages[indexPath.row]
         cell.message = message
         
@@ -140,6 +140,29 @@ class MessagesController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 72
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let message = messages[indexPath.row]
+        
+        guard let chatPartnerId = message.chatPartnerId() else {
+            return
+        }
+        
+        let ref = Database.database().reference().child("users").child(chatPartnerId)
+        ref.observeSingleEvent(of: .value, with: { (DataSnapshot) in
+                        
+            guard let dictionary = DataSnapshot.value as? [String: AnyObject]
+                else {
+                    return
+            }
+            
+            let user = myUser()
+            user.uid = chatPartnerId
+            user.setValuesForKeys(dictionary)
+            self.showChatControllerForUser(user: user)
+            
+        }, withCancel: nil)
     }
     
     override func didMove(toParent parent: UIViewController?) {

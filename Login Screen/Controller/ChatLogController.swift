@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class ChatLogController: UICollectionViewController, UITextFieldDelegate {
+class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout {
     
     var newMessageController: NewMessageController?
     
@@ -17,8 +17,78 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         didSet {
             navigationItem.title = user?.name
             
+            //actual functions to observe messages not called because of fatal error mismatched keys
+            //observeUserMessages()
+            
         }
     }
+    
+    func observeMessages() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+
+        let userMessagesRef = Database.database().reference().child("user-messages").child(uid)
+
+        userMessagesRef.observeSingleEvent(of: .childAdded, with: { (DataSnapshot) in
+
+            let messageId = DataSnapshot.key
+            let messagesRef = Database.database().reference().child("messages").child(messageId)
+            messagesRef.observeSingleEvent(of: .value, with: { (DataSnapshot) in
+
+                print(DataSnapshot)
+
+                guard let dictionary = DataSnapshot.value as? [String: AnyObject] else {
+                    return
+                }
+
+                //will crash if keys don't match
+                let message = Message()
+                message.setValuesForKeys(dictionary)
+                print(message.text)
+
+            }, withCancel: nil)
+
+        }, withCancel: nil)
+
+    }
+    
+    var messages = [Message]()
+    
+    func observeUserMessages() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        let ref = Database.database().reference().child("user-messages").child(uid)
+        ref.observe(.childAdded, with: { (snapshot) in
+            
+            let messageId = snapshot.key
+            let messagesReference = Database.database().reference().child("messages").child(messageId)
+            
+            messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    let message = Message()
+                    message.text = dictionary["text"] as? String ?? "Text not found"
+                    message.senderId = dictionary["sender_Id"] as? String ?? "Sender not found"
+                    message.toId = dictionary["to_Id"] as? String ?? "Reciever not found"
+                    message.timestamp = dictionary["timestamp"] as? NSNumber
+                    
+                    //must update values for keys
+                    message.setValuesForKeys(dictionary)
+                    self.messages.append(message)
+                    print(message.text)
+                }
+                
+            }, withCancel: { (nil) in
+                
+            })
+            
+        }, withCancel: nil)
+        
+    }
+    
     
     lazy var inputTextField: UITextField = {
         let textField = UITextField()
@@ -28,13 +98,32 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         return textField
     }()
     
+    let cellId = "cellId"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         collectionView?.backgroundColor = UIColor.white
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         
         setupInputComponets()
         
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        
+        cell.backgroundColor = UIColor.blue
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.height, height: 80)
     }
     
     func setupInputComponets() {

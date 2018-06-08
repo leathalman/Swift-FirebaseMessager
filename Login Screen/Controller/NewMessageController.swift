@@ -121,7 +121,6 @@ class NewMessageController: UITableViewController {
         print("User Selection Menu Dismissed")
         let user = self.users[indexPath.row]
         self.messagesController?.showChatControllerForUser(user: user)
-        print()
     }
     
 }

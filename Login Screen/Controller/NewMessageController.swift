@@ -43,7 +43,7 @@ class NewMessageController: UITableViewController {
                     print("Uid key = \(user.uid ?? "uid not fetched")")
                     
                     //did it work?
-                    print("fetched users successfully")
+//                    print("fetched users successfully")
                     self.users.append(user)
                     DispatchQueue.main.async { self.tableView.reloadData() }
                 }
@@ -64,7 +64,7 @@ class NewMessageController: UITableViewController {
                 let user = myUser()
                 let uid = userSnap.key //the uid of each user
                 user.uid = uid
-                print("uid key = \(uid)")
+//                print("uid key = \(uid)")
                 self.users.append(user)
                 DispatchQueue.main.async { self.tableView.reloadData() }
             }

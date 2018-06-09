@@ -74,8 +74,8 @@ class MessagesController: UITableViewController {
                     message.toId = dictionary["to_Id"] as? String ?? "Reciever not found"
                     message.timestamp = dictionary["timestamp"] as? NSNumber
                     
-                    if let toId = message.toId {
-                        self.messagesDictionary[toId] = message
+                    if let chatPartnerId = message.chatPartnerId() {
+                        self.messagesDictionary[chatPartnerId] = message
                         
                         self.messages = Array(self.messagesDictionary.values)
                         self.messages.sort(by: { (message1, message2) -> Bool in
@@ -83,9 +83,10 @@ class MessagesController: UITableViewController {
                             return message1.timestamp?.int32Value > message2.timestamp?.int32Value
                         })
                     }
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
+                    self.timer?.invalidate()
+                    print("Cancelled Timer")
+                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+                    print("schedule a table reload")
                 }
                 
             }, withCancel: { (nil) in
@@ -96,32 +97,13 @@ class MessagesController: UITableViewController {
         
     }
     
-    func observeMessages() {
-        let ref = Database.database().reference().child("messages")
-        ref.observe(.childAdded, with: { (snapshot) in
-            
-            if let dictionary = snapshot.value as? [String: AnyObject] {
-                let message = Message()
-                message.text = dictionary["text"] as? String ?? "Text not found"
-                message.senderId = dictionary["sender_Id"] as? String ?? "Sender not found"
-                message.toId = dictionary["to_Id"] as? String ?? "Reciever not found"
-                message.timestamp = dictionary["timestamp"] as? NSNumber 
-                
-                if let toId = message.toId {
-                    self.messagesDictionary[toId] = message
-                    
-                    self.messages = Array(self.messagesDictionary.values)
-                    self.messages.sort(by: { (message1, message2) -> Bool in
-                        
-                        return message1.timestamp?.int32Value > message2.timestamp?.int32Value
-                    })
-                }
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
-            
-        }, withCancel: nil)
+    var timer: Timer?
+    
+    @objc func handleReloadTable() {
+        print("table reloaded")
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

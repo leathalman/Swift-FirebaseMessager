@@ -18,42 +18,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             navigationItem.title = user?.name
             
             //actual functions to observe messages not called because of fatal error mismatched keys
-            //observeUserMessages()
+            observeUserMessages()
             
         }
     }
     
-    func observeMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
-
-        let userMessagesRef = Database.database().reference().child("user-messages").child(uid)
-
-        userMessagesRef.observeSingleEvent(of: .childAdded, with: { (DataSnapshot) in
-
-            let messageId = DataSnapshot.key
-            let messagesRef = Database.database().reference().child("messages").child(messageId)
-            messagesRef.observeSingleEvent(of: .value, with: { (DataSnapshot) in
-
-                print(DataSnapshot)
-
-                guard let dictionary = DataSnapshot.value as? [String: AnyObject] else {
-                    return
-                }
-
-                //will crash if keys don't match
-                let message = Message()
-                message.setValuesForKeys(dictionary)
-                print(message.text)
-
-            }, withCancel: nil)
-
-        }, withCancel: nil)
-
-    }
-    
     var messages = [Message]()
+    var messagesDictionary = [String: Message]()
     
     func observeUserMessages() {
         guard let uid = Auth.auth().currentUser?.uid else {
@@ -75,10 +46,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     message.toId = dictionary["to_Id"] as? String ?? "Reciever not found"
                     message.timestamp = dictionary["timestamp"] as? NSNumber
                     
-                    //must update values for keys
-                    message.setValuesForKeys(dictionary)
-                    self.messages.append(message)
-                    print(message.text)
+                    if message.chatPartnerId() == self.user?.uid {
+                        self.messages.append(message)
+                        DispatchQueue.main.async(execute: {
+                            self.collectionView?.reloadData()
+                        })
+                    }
                 }
                 
             }, withCancel: { (nil) in
@@ -88,7 +61,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }, withCancel: nil)
         
     }
-    
     
     lazy var inputTextField: UITextField = {
         let textField = UITextField()
@@ -103,8 +75,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = UIColor.white
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         
         setupInputComponets()
         
@@ -115,19 +88,22 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatMessageCell
         
-        cell.backgroundColor = UIColor.blue
+        let message = messages[indexPath.item]
+        
+        cell.textView.text = message.text
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.height, height: 80)
+        return CGSize(width: view.frame.width, height: 80)
     }
     
     func setupInputComponets() {
         let containerView = UIView()
+        containerView.backgroundColor = UIColor.white
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(containerView)

@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "iPhone 8 Plus Portrait-2.jpg",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "iPhone 8 Plus Portrait-1.jpg",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icons8-contacts-500.png",
+      "filename" : "iPhone 8 Plus Portrait.jpg",
       "scale" : "3x"
     }
   ],

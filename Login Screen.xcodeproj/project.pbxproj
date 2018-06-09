@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3BF910A4B1AE7794EB79969F /* Pods_Login_Screen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A280553E672176ADAB1036F /* Pods_Login_Screen.framework */; };
 		615B5CC89F3FB54B6D3E29F2 /* Pods_Login_ScreenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A9B591C7620C65916F85E8D /* Pods_Login_ScreenTests.framework */; };
+		F620359420CB6DB000B53F63 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620359320CB6DB000B53F63 /* ChatMessageCell.swift */; };
 		F63176AC203C892B0076C098 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63176AB203C892B0076C098 /* AppDelegate.swift */; };
 		F63176AE203C892B0076C098 /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63176AD203C892B0076C098 /* MessagesController.swift */; };
 		F63176B1203C892B0076C098 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F63176AF203C892B0076C098 /* Main.storyboard */; };
@@ -43,6 +44,7 @@
 		DE3807F72967C147B2418D49 /* Pods-Login Screen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Login Screen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Login Screen/Pods-Login Screen.debug.xcconfig"; sourceTree = "<group>"; };
 		E08135E627E99FAAC24D9CE9 /* Pods-Login Screen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Login Screen.release.xcconfig"; path = "Pods/Target Support Files/Pods-Login Screen/Pods-Login Screen.release.xcconfig"; sourceTree = "<group>"; };
 		ED3FB6A0291B46A5AB51883A /* Pods-Login ScreenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Login ScreenTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Login ScreenTests/Pods-Login ScreenTests.release.xcconfig"; sourceTree = "<group>"; };
+		F620359320CB6DB000B53F63 /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		F63176A8203C892B0076C098 /* Login Screen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Login Screen.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F63176AB203C892B0076C098 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F63176AD203C892B0076C098 /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				F68F118D20C330FB009E7A47 /* UserCell.swift */,
+				F620359320CB6DB000B53F63 /* ChatMessageCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -414,6 +417,7 @@
 				F69939AF2041163C006795D7 /* LoginController+handlers.swift in Sources */,
 				F63176CE203C8B8D0076C098 /* LoginController.swift in Sources */,
 				F6EEAE83203E51F400A03DA4 /* UserNSObject.swift in Sources */,
+				F620359420CB6DB000B53F63 /* ChatMessageCell.swift in Sources */,
 				F63176AC203C892B0076C098 /* AppDelegate.swift in Sources */,
 				F68F118E20C330FB009E7A47 /* UserCell.swift in Sources */,
 				F6596636205D9F290077EA1B /* Extensions.swift in Sources */,
@@ -574,6 +578,7 @@
 			baseConfigurationReference = DE3807F72967C147B2418D49 /* Pods-Login Screen.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchAssets;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8CAAH9J56M;
 				INFOPLIST_FILE = "Login Screen/Info.plist";
@@ -591,6 +596,7 @@
 			baseConfigurationReference = E08135E627E99FAAC24D9CE9 /* Pods-Login Screen.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchAssets;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8CAAH9J56M;
 				INFOPLIST_FILE = "Login Screen/Info.plist";

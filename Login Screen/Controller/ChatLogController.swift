@@ -27,11 +27,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     var messagesDictionary = [String: Message]()
     
     func observeUserMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else {
+        guard let uid = Auth.auth().currentUser?.uid, let toId = user?.uid else {
             return
         }
         
-        let ref = Database.database().reference().child("user-messages").child(uid)
+        let ref = Database.database().reference().child("user-messages").child(uid).child(toId)
         ref.observe(.childAdded, with: { (snapshot) in
             
             let messageId = snapshot.key
@@ -46,12 +46,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     message.toId = dictionary["to_Id"] as? String ?? "Reciever not found"
                     message.timestamp = dictionary["timestamp"] as? NSNumber
                     
-                    if message.chatPartnerId() == self.user?.uid {
-                        self.messages.append(message)
-                        DispatchQueue.main.async(execute: {
-                            self.collectionView?.reloadData()
-                        })
-                    }
+                    self.messages.append(message)
+                    DispatchQueue.main.async(execute: {
+                        self.collectionView?.reloadData()
+                    })
                 }
                 
             }, withCancel: { (nil) in
@@ -82,9 +80,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         collectionView?.keyboardDismissMode = .interactive
         
-//        setupInputComponets()
-//
-//        setupKeyboardObservers()
     }
     
     lazy var inputContainerView: UIView = {
@@ -304,12 +299,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
             self.inputTextField.text = nil
             
-            let userMessagesRef = Database.database().reference().child("user-messages").child(senderId)
+            let userMessagesRef = Database.database().reference().child("user-messages").child(senderId).child(toId)
             
             let messageId = childRef.key
             userMessagesRef.updateChildValues([messageId: 1])
             
-            let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toId)
+            let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toId).child(senderId)
             recipientUserMessagesRef.updateChildValues([messageId: 1])
         }
     }

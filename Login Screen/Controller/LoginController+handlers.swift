@@ -7,6 +7,7 @@
 //
 import UIKit
 import Firebase
+import Photos
 
 extension LoginController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -80,8 +81,24 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         })
     }
     
+    func checkPermission() {
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+        switch photoAuthorizationStatus {
+        case .authorized: print("Access is granted by user")
+        case .notDetermined: PHPhotoLibrary.requestAuthorization({
+            (newStatus) in
+            print("status is \(newStatus)")
+            if newStatus == PHAuthorizationStatus.authorized { print("success") }
+        })
+        case .restricted: print("User do not have access to photo album.")
+        case .denied: print("User has denied the permission.")
+        }
+    }
     
     @objc func handleSelectProfileImageView(_ sender: UITapGestureRecognizer) {
+        
+        checkPermission()
+        
         let picker = UIImagePickerController()
         
         picker.delegate = self
@@ -90,8 +107,10 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         present(picker, animated: true, completion: nil)
     }
     
-    private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
+//    private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    //errors encountered while discovering extensions: Error Domain=PlugInKit Code=13 "query cancelled" UserInfo={NSLocalizedDescription=query cancelled}, occurs without @objc head, complier error when used with private func
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+
         var selectedImageFromPicker: UIImage?
         
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {

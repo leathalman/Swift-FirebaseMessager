@@ -185,6 +185,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         setupLoginRegisterButton()
         setupProfileImageView()
         setupLoginRegisterSegmentedControl()
+        
     }
     
     func setupLoginRegisterSegmentedControl(){

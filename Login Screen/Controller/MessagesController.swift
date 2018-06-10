@@ -41,7 +41,8 @@ class MessagesController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        //        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "settingsIcon"), style: .plain, target: self, action: #selector(handleSettings))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "newMessageIcon"), style: .plain, target: self, action: #selector(handleNewMessage))
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismiss))
         
@@ -49,6 +50,23 @@ class MessagesController: UITableViewController {
         
         checkIfUserIsLoggedIn()
         
+                let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipeLeft(_:)))
+                swipeLeft.direction = .left
+                view.addGestureRecognizer(swipeLeft)
+                view.isUserInteractionEnabled = true
+        
+    }
+    
+    
+    @objc func handleSwipeLeft(_ sender: UITapGestureRecognizer) {
+        handleNewMessage()
+        print("swipe dismiss")
+    }
+    
+    @objc func handleSettings() {
+        let settingsController = SettingsController()
+        let navController = UINavigationController(rootViewController: settingsController)
+        present(navController, animated: true, completion: nil)
     }
     
     var messages = [Message]()
@@ -82,9 +100,9 @@ class MessagesController: UITableViewController {
                             
                         }
                         self.attemptReloadofTable()
-                    
+                        
                     }
-                
+                    
                 }, withCancel: nil)
                 
             }, withCancel: { (nil) in
@@ -108,11 +126,11 @@ class MessagesController: UITableViewController {
             
             return message1.timestamp?.int32Value > message2.timestamp?.int32Value
         })
-        
-        print("table reloaded")
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
+        //        print("table reloaded")
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -142,7 +160,7 @@ class MessagesController: UITableViewController {
         
         let ref = Database.database().reference().child("users").child(chatPartnerId)
         ref.observeSingleEvent(of: .value, with: { (DataSnapshot) in
-                        
+            
             guard let dictionary = DataSnapshot.value as? [String: AnyObject]
                 else {
                     return
@@ -164,6 +182,7 @@ class MessagesController: UITableViewController {
         let newMessageController = NewMessageController()
         newMessageController.messagesController = self
         let navController = UINavigationController(rootViewController: newMessageController)
+        //        navController.modalTransitionStyle = .crossDissolve
         present(navController, animated: true, completion: nil)
     }
     
@@ -179,9 +198,10 @@ class MessagesController: UITableViewController {
     }
     
     func fetchUserAndSetupNavBarTitle() {
-        messages.removeAll()
-        messagesDictionary.removeAll()
-        tableView.reloadData()
+        //commented section to imprvove speed
+        //        messages.removeAll()
+        //        messagesDictionary.removeAll()
+        //        tableView.reloadData()
         
         observeUserMessages()
         

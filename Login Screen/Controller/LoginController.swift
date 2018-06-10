@@ -26,6 +26,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         let button = UIButton(type: .system)
         button.backgroundColor = UIColor(r:49, g:137, b:123)
         button.setTitle("Register", for: UIControl.State.normal)
+        button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.white, for: UIControl.State.normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
@@ -199,7 +200,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     func setupProfileImageView() {
         //contraints: need x, y, width, height
         profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -12).isActive = true
+        profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -20).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         

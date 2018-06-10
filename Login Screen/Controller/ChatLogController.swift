@@ -19,7 +19,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
             observeUserMessages()
         
-            
         }
     }
     
@@ -47,11 +46,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     message.timestamp = dictionary["timestamp"] as? NSNumber
                     
                     self.messages.append(message)
-//                    print(self.collectionView.numberOfItems(inSection: 0))
-//                    self.collectionView.scrollToLast()
                     
                     DispatchQueue.main.async(execute: {
                         self.collectionView?.reloadData()
+                        //called scroll to last item once when area loaded
+                        self.collectionView.scrollToLast()
                     })
                 }
                 
@@ -80,6 +79,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = UIColor.white
         collectionView.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
+        
+        //scroll to last item in collectionView
+        collectionView.scrollToLast()
+
         
         collectionView?.keyboardDismissMode = .interactive
         
@@ -171,11 +174,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatMessageCell
-        
-        let cv = collectionView.numberOfItems(inSection: 0)
-        print(cv)
-        collectionView.scrollToLast()
-        
         let message = messages[indexPath.item]
         cell.textView.text = message.text
         

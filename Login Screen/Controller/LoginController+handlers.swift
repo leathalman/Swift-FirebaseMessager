@@ -109,6 +109,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     
 //    private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
     //errors encountered while discovering extensions: Error Domain=PlugInKit Code=13 "query cancelled" UserInfo={NSLocalizedDescription=query cancelled}, occurs without @objc head, complier error when used with private func
+    //THIS IS A TEMPORARY FIX UNTIL OFFICAL RELEASE OF XCODE 10
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
 
         var selectedImageFromPicker: UIImage?
@@ -124,7 +125,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             profileImageView.image = selectedImage
         }
         
-        self.messagesController?.fetchUserAndSetupNavBarTitle()
+        self.messagesController?.setupNavBarWithUser()
         
         dismiss(animated: true, completion: nil)
     }

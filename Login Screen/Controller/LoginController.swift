@@ -70,7 +70,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
             
             //successfully logged in user
             
-            self.messagesController?.fetchUserAndSetupNavBarTitle()
+            self.messagesController?.setupNavBarWithUser()
             self.dismiss(animated: true, completion: nil)
         })
         

@@ -48,19 +48,34 @@ class MessagesController: UITableViewController {
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
+        setupSwipeLeft()
+        setupSwipeRight()
+        
         checkIfUserIsLoggedIn()
-        
-                let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipeLeft(_:)))
-                swipeLeft.direction = .left
-                view.addGestureRecognizer(swipeLeft)
-                view.isUserInteractionEnabled = true
-        
     }
     
+    func setupSwipeLeft() {
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipeLeft(_:)))
+        swipeLeft.direction = .left
+        view.addGestureRecognizer(swipeLeft)
+        view.isUserInteractionEnabled = true
+    }
+    
+    func setupSwipeRight() {
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipeRight(_:)))
+        swipeRight.direction = .right
+        view.addGestureRecognizer(swipeRight)
+        view.isUserInteractionEnabled = true
+    }
     
     @objc func handleSwipeLeft(_ sender: UITapGestureRecognizer) {
         handleNewMessage()
-        print("swipe dismiss")
+        print("left swipe activated")
+    }
+    
+    @objc func handleSwipeRight(_ sender: UITapGestureRecognizer) {
+        handleSettings()
+        print("left swipe activated")
     }
     
     @objc func handleSettings() {
@@ -148,7 +163,7 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 72
+        return 90
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -182,7 +197,6 @@ class MessagesController: UITableViewController {
         let newMessageController = NewMessageController()
         newMessageController.messagesController = self
         let navController = UINavigationController(rootViewController: newMessageController)
-        //        navController.modalTransitionStyle = .crossDissolve
         present(navController, animated: true, completion: nil)
     }
     
@@ -193,29 +207,65 @@ class MessagesController: UITableViewController {
             handleLogout()
             
         } else {
-            fetchUserAndSetupNavBarTitle()
+            observeUserMessages()
+            setupNavBarWithUser()
         }
     }
     
-    func fetchUserAndSetupNavBarTitle() {
+    func setupNavBarWithUser() {
         //commented section to imprvove speed
         //        messages.removeAll()
         //        messagesDictionary.removeAll()
         //        tableView.reloadData()
         
-        observeUserMessages()
-        
         guard let uid = Auth.auth().currentUser?.uid else {
-            //for some reason uid = nil
             return
         }
-        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with:  { (snapshot) in
-            
-            if let dictionary = snapshot.value as? [String: AnyObject] {
-                self.navigationItem.title = dictionary["name"] as? String
-            }
-        }, withCancel: nil)
         
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value) { (DataSnapshot) in
+            
+            if let dictionary = DataSnapshot.value as? [String: AnyObject] {
+                let name = dictionary["name"] as? String ?? "Name not found"
+                let profileImageUrl = dictionary["profileImageUrl"] as? String ?? "Name not found"
+                
+                let titleView = UIView()
+                titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
+                
+                let containerView = UIView()
+                containerView.translatesAutoresizingMaskIntoConstraints = false
+                
+                let nameLabel = UILabel()
+                nameLabel.text = name
+                nameLabel.translatesAutoresizingMaskIntoConstraints = false
+                
+                let profileImageView = UIImageView()
+                profileImageView.translatesAutoresizingMaskIntoConstraints = false
+                profileImageView.contentMode = .scaleAspectFill
+                profileImageView.layer.cornerRadius = 17
+                profileImageView.clipsToBounds = true
+                profileImageView.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
+                
+                titleView.addSubview(containerView)
+                containerView.addSubview(profileImageView)
+                containerView.addSubview(nameLabel)
+                
+                //contraints for navBar
+                profileImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
+                profileImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+                profileImageView.widthAnchor.constraint(equalToConstant: 34).isActive = true
+                profileImageView.heightAnchor.constraint(equalToConstant: 34).isActive = true
+                
+                nameLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8).isActive = true
+                nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
+                nameLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
+                nameLabel.heightAnchor.constraint(equalTo: profileImageView.heightAnchor).isActive = true
+                
+                containerView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
+                containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
+                
+                self.navigationItem.titleView = titleView
+            }
+        }
     }
     
     @objc func showChatControllerForUser(user: myUser) {

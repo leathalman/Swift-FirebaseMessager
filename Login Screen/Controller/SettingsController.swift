@@ -13,22 +13,25 @@ class SettingsController: UITableViewController {
     
     override func viewDidLoad() {
         navigationItem.title = "Settings"
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismiss))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleDismiss))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
     }
     
     @objc func handleLogout() {
-        
         do {
             try Auth.auth().signOut()
         } catch _ {
             print("Logout Error!")
             
         }
-        
         let loginController = LoginController()
         dismiss(animated: true, completion: nil)
         present(loginController, animated: true, completion: nil)
     }
+    
+    @objc func handleDismiss() {
+        dismiss(animated: true, completion: nil)
+    }
+    
 }
 

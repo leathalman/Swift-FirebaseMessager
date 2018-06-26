@@ -82,10 +82,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         //scroll to last item in collectionView
         collectionView.scrollToLast()
-
-        
+            
         collectionView?.keyboardDismissMode = .interactive
-        
+    }
+    
+    @objc func handleCancel() {
+        dismiss(animated: true, completion: nil)
     }
     
     lazy var inputContainerView: UIView = {
@@ -240,9 +242,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         containerView.backgroundColor = UIColor.white
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.layoutIfNeeded()
-        
-        //scroll to last item
-        
         
         view.addSubview(containerView)
         

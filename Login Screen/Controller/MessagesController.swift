@@ -41,15 +41,15 @@ class MessagesController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "settingsIcon"), style: .plain, target: self, action: #selector(handleSettings))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "newMessageIcon"), style: .plain, target: self, action: #selector(handleNewMessage))
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismiss))
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
-        setupSwipeLeft()
-        setupSwipeRight()
+//        setupSwipeLeft()
+//        setupSwipeRight()
         
         checkIfUserIsLoggedIn()
     }
@@ -111,15 +111,12 @@ class MessagesController: UITableViewController {
                         message.timestamp = dictionary["timestamp"] as? NSNumber
                         
                         if let chatPartnerId = message.chatPartnerId() {
-                            self.messagesDictionary[chatPartnerId] = message
-                            
+                            self.messagesDictionary[chatPartnerId] = message                            
                         }
                         self.attemptReloadofTable()
-                        
                     }
-                    
                 }, withCancel: nil)
-                
+        
             }, withCancel: { (nil) in
                 
             })
@@ -167,6 +164,7 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         let message = messages[indexPath.row]
         
         guard let chatPartnerId = message.chatPartnerId() else {
@@ -214,9 +212,9 @@ class MessagesController: UITableViewController {
     
     func setupNavBarWithUser() {
         //commented section to imprvove speed
-        //        messages.removeAll()
-        //        messagesDictionary.removeAll()
-        //        tableView.reloadData()
+//        messages.removeAll()
+//        messagesDictionary.removeAll()
+//        tableView.reloadData()
         
         guard let uid = Auth.auth().currentUser?.uid else {
             return
@@ -286,6 +284,8 @@ class MessagesController: UITableViewController {
         let loginController = LoginController()
         loginController.messagesController = self
         present(loginController, animated: true, completion: nil)
+        messages.removeAll()
+        messagesDictionary.removeAll()
+        tableView.reloadData()
     }
-    
 }

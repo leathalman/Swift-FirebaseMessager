@@ -72,3 +72,10 @@ extension String {
         return (self.count > length) ? self.prefix(length) + trailing : self
     }
 }
+
+extension NewMessageController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+}

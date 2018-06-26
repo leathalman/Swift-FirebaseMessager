@@ -13,16 +13,52 @@ class NewMessageController: UITableViewController {
     
     let cellId = "cellId"
     var users = [myUser]()
+    var filteredUsers = [myUser]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
+        navigationItem.title = "New Message"
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
+        let backButton = UIBarButtonItem()
+        backButton.title = "Back"
+        backButton.target = self
+        backButton.action = #selector(handleCancel)
+        navigationItem.backBarButtonItem = backButton
+        
+        setupSearchBar()
         fetchUsers()
         
+    }
+
+    let searchController = UISearchController(searchResultsController: nil)
+
+    func setupSearchBar() {
+        searchController.searchResultsUpdater = self as UISearchResultsUpdating
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Users"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        filteredUsers = users.filter({( user : myUser) -> Bool in
+            return user.name!.lowercased().contains(searchText.lowercased())
+        })
+        
+        tableView.reloadData()
+    }
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
     }
     
     func fetchUsers() {
@@ -64,7 +100,6 @@ class NewMessageController: UITableViewController {
                 let user = myUser()
                 let uid = userSnap.key //the uid of each user
                 user.uid = uid
-//                print("uid key = \(uid)")
                 self.users.append(user)
                 DispatchQueue.main.async { self.tableView.reloadData() }
             }
@@ -73,10 +108,13 @@ class NewMessageController: UITableViewController {
     
     @objc func handleCancel() {
         dismiss(animated: true, completion: nil)
-        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering() {
+            return filteredUsers.count
+        }
+        
         return users.count
     }
     
@@ -84,7 +122,13 @@ class NewMessageController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         
-        let user = users[indexPath.row]
+        let user: myUser
+        
+        if isFiltering() {
+            user = filteredUsers[indexPath.row]
+        } else {
+            user = users[indexPath.row]
+        }
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
         
@@ -117,10 +161,24 @@ class NewMessageController: UITableViewController {
     var messagesController: MessagesController?
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        dismiss(animated: true, completion: nil)
-        print("User Selection Menu Dismissed")
-        let user = self.users[indexPath.row]
-        self.messagesController?.showChatControllerForUser(user: user)
+        
+        if isFiltering() {
+            
+            let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+            chatLogController.user = self.filteredUsers[indexPath.row]
+            navigationController?.pushViewController(chatLogController, animated: true)
+
+        } else {
+            
+//            dismiss(animated: true, completion: nil)
+//            let user = self.users[indexPath.row]
+//            self.messagesController?.showChatControllerForUser(user: user)
+            
+            let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+            chatLogController.user = self.users[indexPath.row]
+            navigationController?.pushViewController(chatLogController, animated: true)
+        }
+
     }
     
 }

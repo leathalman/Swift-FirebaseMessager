@@ -16,8 +16,15 @@ class UserCell: UITableViewCell {
             setupNameAndProfileImage()
             
             let messageString = message?.text
+        
             //using extension (see Extensions.swift) to truncate string values
-            detailTextLabel?.text = messageString?.trunc(length: 49, trailing: "...")
+            
+            //temporary alternating detail label for sending images
+            if messageString == nil {
+                detailTextLabel?.text = "Image Sent"
+            } else {
+                detailTextLabel?.text = messageString?.trunc(length: 49, trailing: "...")
+            }
         
             if let seconds = message?.timestamp?.doubleValue {
                 let timestampDate = Date(timeIntervalSince1970: seconds)

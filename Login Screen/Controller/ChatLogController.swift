@@ -45,6 +45,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     message.toId = dictionary["to_Id"] as? String ?? "Reciever not found"
                     message.timestamp = dictionary["timestamp"] as? NSNumber
                     message.imageUrl = dictionary["imageUrl"] as? String
+                    message.imageWidth = dictionary["imageWidth"] as? NSNumber
+                    message.imageHeight = dictionary["imageHeight"] as? NSNumber
                     
                     self.messages.append(message)
                     
@@ -81,10 +83,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.backgroundColor = UIColor.white
         collectionView.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         
-        //scroll to last item in collectionView
-        collectionView.scrollToLast()
-            
         collectionView?.keyboardDismissMode = .interactive
+        setupKeyboardObservers()
     }
     
     lazy var inputContainerView: UIView = {
@@ -171,7 +171,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             ref.putData(uploadData, metadata: nil) { (metadata, error) in
                 
                 if error != nil {
-                    print("Failed to upload image", error ?? "firebase error for uplaoding image")
+                    print("Failed to upload image", error ?? "Firebase error for uplaoding image")
                     return
                 }
                 
@@ -180,7 +180,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                         print(error)
                     } else {
                         let imageUrl = url?.absoluteString
-                        self.sendMessageWithImageUrl(imageUrl: imageUrl!)
+                        self.sendMessageWithImageUrl(imageUrl: imageUrl!, image: image)
                         
                     }
                 }
@@ -188,33 +188,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
     }
     
-    private func sendMessageWithImageUrl(imageUrl: String) {
-        let ref = Database.database().reference().child("messages")
-        let childRef = ref.childByAutoId()
+    private func sendMessageWithImageUrl(imageUrl: String, image: UIImage) {
+        let properties: [String: Any] = ["imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height]
         
-        let toId = user!.uid!
-        let senderId = Auth.auth().currentUser!.uid
-        
-        let timestamp = (NSDate().timeIntervalSince1970)
-        
-        let values = ["imageUrl": imageUrl, "to_Id": toId, "sender_Id": senderId, "timestamp": timestamp] as [String : Any]
-        
-        childRef.updateChildValues(values) { (error, ref ) in
-            if error != nil {
-                print(error ?? "error updating child values")
-                return
-            }
-            
-            self.inputTextField.text = nil
-            
-            let userMessagesRef = Database.database().reference().child("user-messages").child(senderId).child(toId)
-            
-            let messageId = childRef.key
-            userMessagesRef.updateChildValues([messageId: 1])
-            
-            let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toId).child(senderId)
-            recipientUserMessagesRef.updateChildValues([messageId: 1])
-        }
+        sendMessageWithProperties(properties: properties)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -230,9 +207,17 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     override var canBecomeFirstResponder: Bool { return true }
     
     func setupKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+//
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func handleKeyboardDidShow() {
+        if messages.count > 0 {
+            let indexPath = IndexPath(item: messages.count - 1, section: 0)
+            collectionView?.scrollToItem(at: indexPath, at: .top, animated: true)
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -274,6 +259,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         if let text = message.text {
             cell.bubbleWidthAnchor?.constant = estimateFrameforText(text: text).width + 32
+        } else if message.imageUrl != nil {
+            cell.bubbleWidthAnchor?.constant = 200
         }
         
         return cell
@@ -286,12 +273,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
         
         if let messageImageUrl = message.imageUrl {
-            print("somethign")
             cell.messageImageView.loadImageUsingCacheWithUrlString(urlString: messageImageUrl)
             cell.messageImageView.isHidden = false
             cell.bubbleView.backgroundColor = UIColor.clear
         } else {
-            print("sometihng else")
             cell.messageImageView.isHidden = true
         }
         
@@ -322,9 +307,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 80
         
-        //get estimated height
-        if let text = messages[indexPath.item].text {
+        let message = messages[indexPath.item]
+        
+        if let text = message.text {
             height = estimateFrameforText(text: text).height + 20
+        } else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue {
+            
+            height = CGFloat(imageHeight / imageWidth * 200)
         }
         
         return CGSize(width: view.frame.width, height: height)
@@ -341,7 +330,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     var containerViewBottomAnchor: NSLayoutConstraint?
     
     @objc func handleSend() {
-        
+        let properties = ["text": inputTextField.text!]
+        sendMessageWithProperties(properties: properties)
+    }
+    
+    private func sendMessageWithProperties(properties: [String: Any]) {
         let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
         
@@ -349,8 +342,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let senderId = Auth.auth().currentUser!.uid
         
         let timestamp = (NSDate().timeIntervalSince1970)
-
-        let values = ["text": inputTextField.text!, "to_Id": toId, "sender_Id": senderId, "timestamp": timestamp] as [String : Any]
+        
+        var values: [String: Any] = ["to_Id": toId, "sender_Id": senderId, "timestamp": timestamp] as [String : Any]
+        
+        properties.forEach({values[$0.0] = $0.1})
         
         childRef.updateChildValues(values) { (error, ref ) in
             if error != nil {

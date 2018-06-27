@@ -17,6 +17,8 @@ class Message: NSObject {
     @objc var timestamp: NSNumber?
     
     @objc var imageUrl: String?
+    @objc var imageHeight: NSNumber?
+    @objc var imageWidth: NSNumber?
     
     func chatPartnerId() -> String? {
         if senderId == Auth.auth().currentUser?.uid {

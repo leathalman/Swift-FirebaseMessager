@@ -78,15 +78,11 @@ class NewMessageController: UITableViewController {
                     user.uid = uid
                     print("Uid key = \(user.uid ?? "uid not fetched")")
                     
-                    //did it work?
-//                    print("fetched users successfully")
                     self.users.append(user)
                     DispatchQueue.main.async { self.tableView.reloadData() }
                 }
             }
         }
-        
-        //fetchUid()
     }
     
     func fetchUid() {

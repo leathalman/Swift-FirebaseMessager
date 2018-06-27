@@ -105,7 +105,7 @@ class MessagesController: UITableViewController {
                     
                     if let dictionary = snapshot.value as? [String: AnyObject] {
                         let message = Message()
-                        message.text = dictionary["text"] as? String ?? "Text not found"
+                        message.text = dictionary["text"] as? String 
                         message.senderId = dictionary["sender_Id"] as? String ?? "Sender not found"
                         message.toId = dictionary["to_Id"] as? String ?? "Reciever not found"
                         message.timestamp = dictionary["timestamp"] as? NSNumber

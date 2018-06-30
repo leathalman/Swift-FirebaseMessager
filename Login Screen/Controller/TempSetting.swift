@@ -29,14 +29,10 @@ class TempSetting: UIViewController, UITableViewDelegate, UITableViewDataSource 
         let displayHeight: CGFloat = self.view.frame.height
         
         myTableView = UITableView(frame: CGRect(x: 0, y: barHeight+navigationBarHeight, width: displayWidth, height: displayHeight - (barHeight+navigationBarHeight)))
-        myTableView.register(SettingsCell.self, forCellReuseIdentifier: "cell")
+        myTableView.register(SettingsCell.self, forCellReuseIdentifier: "SettingsCell")
         
         myTableView.dataSource = self
         myTableView.delegate = self
-        
-        //Auto-set the UITableViewCells height (requires iOS8+)
-        myTableView.rowHeight = UITableView.automaticDimension
-        myTableView.estimatedRowHeight = 44
         
         self.view.addSubview(myTableView)
     }
@@ -84,7 +80,7 @@ class TempSetting: UIViewController, UITableViewDelegate, UITableViewDataSource 
     // return cells
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SettingsCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsCell
         
         if indexPath.section == 0 {
             
@@ -93,7 +89,7 @@ class TempSetting: UIViewController, UITableViewDelegate, UITableViewDataSource 
             
         } else if indexPath.section == 1 {
             
-            cell.labelText.text = "\(general[indexPath.row])"
+            cell.labelText.text = "\(other[indexPath.row])"
         }
         
         return cell

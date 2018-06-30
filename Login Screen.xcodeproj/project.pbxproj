@@ -19,6 +19,10 @@
 		F63176CE203C8B8D0076C098 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63176CD203C8B8D0076C098 /* LoginController.swift */; };
 		F632FBB52060303F00330C94 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F632FBB42060303F00330C94 /* ChatLogController.swift */; };
 		F6596636205D9F290077EA1B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6596635205D9F290077EA1B /* Extensions.swift */; };
+		F665350E20E6EC2200BB7212 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665350D20E6EC2200BB7212 /* Constants.swift */; };
+		F665351020E70D4D00BB7212 /* TempSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665350F20E70D4D00BB7212 /* TempSetting.swift */; };
+		F665351420E70DB000BB7212 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665351320E70DB000BB7212 /* SettingsCell.swift */; };
+		F665351820E7174200BB7212 /* SettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665351720E7174200BB7212 /* SettingsSwitchCell.swift */; };
 		F68F118E20C330FB009E7A47 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68F118D20C330FB009E7A47 /* UserCell.swift */; };
 		F6948F67203CCE6000E9E9CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F6948F66203CCE6000E9E9CD /* GoogleService-Info.plist */; };
 		F69939AF2041163C006795D7 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69939AE2041163C006795D7 /* LoginController+handlers.swift */; };
@@ -59,6 +63,10 @@
 		F63176CD203C8B8D0076C098 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		F632FBB42060303F00330C94 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		F6596635205D9F290077EA1B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		F665350D20E6EC2200BB7212 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		F665350F20E70D4D00BB7212 /* TempSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempSetting.swift; sourceTree = "<group>"; };
+		F665351320E70DB000BB7212 /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		F665351720E7174200BB7212 /* SettingsSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCell.swift; sourceTree = "<group>"; };
 		F68F118D20C330FB009E7A47 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		F6948F66203CCE6000E9E9CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F69939AE2041163C006795D7 /* LoginController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
@@ -163,6 +171,7 @@
 				F6BAD535203E3A6B003F7DE9 /* NewMessageController.swift */,
 				F632FBB42060303F00330C94 /* ChatLogController.swift */,
 				F6E45AE520CCC82B00222CC2 /* SettingsController.swift */,
+				F665350F20E70D4D00BB7212 /* TempSetting.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -171,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				F6596635205D9F290077EA1B /* Extensions.swift */,
+				F665350D20E6EC2200BB7212 /* Constants.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -180,6 +190,8 @@
 			children = (
 				F68F118D20C330FB009E7A47 /* UserCell.swift */,
 				F620359320CB6DB000B53F63 /* ChatMessageCell.swift */,
+				F665351320E70DB000BB7212 /* SettingsCell.swift */,
+				F665351720E7174200BB7212 /* SettingsSwitchCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -413,18 +425,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F665351020E70D4D00BB7212 /* TempSetting.swift in Sources */,
 				F6E45AE620CCC82B00222CC2 /* SettingsController.swift in Sources */,
 				F632FBB52060303F00330C94 /* ChatLogController.swift in Sources */,
 				F6BAD536203E3A6B003F7DE9 /* NewMessageController.swift in Sources */,
 				F63176AE203C892B0076C098 /* MessagesController.swift in Sources */,
 				F6FF9C8520C3049900AE6E4C /* Message.swift in Sources */,
+				F665351820E7174200BB7212 /* SettingsSwitchCell.swift in Sources */,
 				F69939AF2041163C006795D7 /* LoginController+handlers.swift in Sources */,
 				F63176CE203C8B8D0076C098 /* LoginController.swift in Sources */,
+				F665350E20E6EC2200BB7212 /* Constants.swift in Sources */,
 				F6EEAE83203E51F400A03DA4 /* UserNSObject.swift in Sources */,
 				F620359420CB6DB000B53F63 /* ChatMessageCell.swift in Sources */,
 				F63176AC203C892B0076C098 /* AppDelegate.swift in Sources */,
 				F68F118E20C330FB009E7A47 /* UserCell.swift in Sources */,
 				F6596636205D9F290077EA1B /* Extensions.swift in Sources */,
+				F665351420E70DB000BB7212 /* SettingsCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -522,6 +538,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -573,6 +590,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -586,7 +604,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8CAAH9J56M;
 				INFOPLIST_FILE = "Login Screen/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Leathal.Login-Screen";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -604,7 +622,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8CAAH9J56M;
 				INFOPLIST_FILE = "Login Screen/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Leathal.Login-Screen";
 				PRODUCT_NAME = "$(TARGET_NAME)";

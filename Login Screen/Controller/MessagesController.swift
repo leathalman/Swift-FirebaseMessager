@@ -33,25 +33,42 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-
 class MessagesController: UITableViewController {
     
     let cellId = "cellId"
     
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "settingsIcon"), style: .plain, target: self, action: #selector(handleSettings))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "newMessageIcon"), style: .plain, target: self, action: #selector(handleNewMessage))
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismiss))
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
-//        setupSwipeLeft()
-//        setupSwipeRight()
+        setupSwipeLeft()
+        setupSwipeRight()
         
         checkIfUserIsLoggedIn()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        detectDarkMode()
+    }
+    
+    public func detectDarkMode() {
+        let darkModeEnabled = defaults.bool(forKey: "DarkDefault")
+        
+        if darkModeEnabled {
+            //dark mode enabled "DarkDefault"
+            
+        } else {
+            //light mode enabled "LightDefault"
+            
+        }
+        
     }
     
     func setupSwipeLeft() {
@@ -79,9 +96,14 @@ class MessagesController: UITableViewController {
     }
     
     @objc func handleSettings() {
-        let settingsController = SettingsController()
+//        let settingsController = SettingsController()
+//        let navController = UINavigationController(rootViewController: settingsController)
+//        present(navController, animated: true, completion: nil)
+        
+        let settingsController = TempSetting()
         let navController = UINavigationController(rootViewController: settingsController)
         present(navController, animated: true, completion: nil)
+
     }
     
     var messages = [Message]()

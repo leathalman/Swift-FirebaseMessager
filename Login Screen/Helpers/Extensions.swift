@@ -74,8 +74,12 @@ extension String {
 }
 
 extension NewMessageController: UISearchResultsUpdating {
-    // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }
+}
+
+extension Notification.Name {
+    static let darkModeEnabled = Notification.Name("com.yourApp.notifications.darkModeEnabled")
+    static let darkModeDisabled = Notification.Name("com.yourApp.notifications.darkModeDisabled")
 }

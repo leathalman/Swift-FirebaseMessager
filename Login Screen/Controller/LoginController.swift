@@ -13,7 +13,15 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     var messagesController: MessagesController?
     
-    let inputContainerView : UIView = {
+    public var screenWidth: CGFloat {
+        return UIScreen.main.bounds.width
+    }
+    
+    public var screenHeight: CGFloat {
+        return UIScreen.main.bounds.height
+    }
+    
+    let inputContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -130,7 +138,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView(_:)))
         imageView.addGestureRecognizer(tap)
         
-        
         return imageView
     }()
     
@@ -200,7 +207,11 @@ class LoginController: UIViewController, UITextFieldDelegate {
     func setupProfileImageView() {
         //contraints: need x, y, width, height
         profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -20).isActive = true
+        if screenHeight < 600 {
+            profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -10).isActive = true
+        } else {
+            profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -20).isActive = true
+        }
         profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         

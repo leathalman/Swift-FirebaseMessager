@@ -21,4 +21,8 @@ struct Colors {
     
     static var lighterDarkBlue = UIColor(r: 36, g: 41, b: 50)
     
+    static var gray = UIColor(r: 50, g: 54, b: 63)
+    
+    static var offWhite = UIColor(r: 247, g: 247, b: 247)
+
 }

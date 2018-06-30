@@ -68,7 +68,6 @@ class MessagesController: UITableViewController {
             //light mode enabled "LightDefault"
             
         }
-        
     }
     
     func setupSwipeLeft() {

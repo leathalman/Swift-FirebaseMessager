@@ -58,7 +58,7 @@ class MessagesController: UITableViewController {
         detectDarkMode()
     }
     
-    public func detectDarkMode() {
+    func detectDarkMode() {
         let darkModeEnabled = defaults.bool(forKey: "DarkDefault")
         
         if darkModeEnabled {
@@ -96,11 +96,8 @@ class MessagesController: UITableViewController {
     }
     
     @objc func handleSettings() {
-//        let settingsController = SettingsController()
-//        let navController = UINavigationController(rootViewController: settingsController)
-//        present(navController, animated: true, completion: nil)
         
-        let settingsController = TempSetting()
+        let settingsController = SettingsController()
         let navController = UINavigationController(rootViewController: settingsController)
         present(navController, animated: true, completion: nil)
 

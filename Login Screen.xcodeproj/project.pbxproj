@@ -20,14 +20,13 @@
 		F632FBB52060303F00330C94 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F632FBB42060303F00330C94 /* ChatLogController.swift */; };
 		F6596636205D9F290077EA1B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6596635205D9F290077EA1B /* Extensions.swift */; };
 		F665350E20E6EC2200BB7212 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665350D20E6EC2200BB7212 /* Constants.swift */; };
-		F665351020E70D4D00BB7212 /* TempSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665350F20E70D4D00BB7212 /* TempSetting.swift */; };
+		F665351020E70D4D00BB7212 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665350F20E70D4D00BB7212 /* SettingsController.swift */; };
 		F665351420E70DB000BB7212 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665351320E70DB000BB7212 /* SettingsCell.swift */; };
 		F665351820E7174200BB7212 /* SettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665351720E7174200BB7212 /* SettingsSwitchCell.swift */; };
 		F68F118E20C330FB009E7A47 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68F118D20C330FB009E7A47 /* UserCell.swift */; };
 		F6948F67203CCE6000E9E9CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F6948F66203CCE6000E9E9CD /* GoogleService-Info.plist */; };
 		F69939AF2041163C006795D7 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69939AE2041163C006795D7 /* LoginController+handlers.swift */; };
 		F6BAD536203E3A6B003F7DE9 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BAD535203E3A6B003F7DE9 /* NewMessageController.swift */; };
-		F6E45AE620CCC82B00222CC2 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E45AE520CCC82B00222CC2 /* SettingsController.swift */; };
 		F6EEAE83203E51F400A03DA4 /* UserNSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEAE82203E51F400A03DA4 /* UserNSObject.swift */; };
 		F6FF9C8520C3049900AE6E4C /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FF9C8420C3049900AE6E4C /* Message.swift */; };
 /* End PBXBuildFile section */
@@ -64,14 +63,13 @@
 		F632FBB42060303F00330C94 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		F6596635205D9F290077EA1B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F665350D20E6EC2200BB7212 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		F665350F20E70D4D00BB7212 /* TempSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempSetting.swift; sourceTree = "<group>"; };
+		F665350F20E70D4D00BB7212 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		F665351320E70DB000BB7212 /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		F665351720E7174200BB7212 /* SettingsSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCell.swift; sourceTree = "<group>"; };
 		F68F118D20C330FB009E7A47 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		F6948F66203CCE6000E9E9CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F69939AE2041163C006795D7 /* LoginController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		F6BAD535203E3A6B003F7DE9 /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
-		F6E45AE520CCC82B00222CC2 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		F6EEAE82203E51F400A03DA4 /* UserNSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNSObject.swift; sourceTree = "<group>"; };
 		F6FF9C8420C3049900AE6E4C /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -170,8 +168,7 @@
 				F63176AD203C892B0076C098 /* MessagesController.swift */,
 				F6BAD535203E3A6B003F7DE9 /* NewMessageController.swift */,
 				F632FBB42060303F00330C94 /* ChatLogController.swift */,
-				F6E45AE520CCC82B00222CC2 /* SettingsController.swift */,
-				F665350F20E70D4D00BB7212 /* TempSetting.swift */,
+				F665350F20E70D4D00BB7212 /* SettingsController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -425,8 +422,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F665351020E70D4D00BB7212 /* TempSetting.swift in Sources */,
-				F6E45AE620CCC82B00222CC2 /* SettingsController.swift in Sources */,
+				F665351020E70D4D00BB7212 /* SettingsController.swift in Sources */,
 				F632FBB52060303F00330C94 /* ChatLogController.swift in Sources */,
 				F6BAD536203E3A6B003F7DE9 /* NewMessageController.swift in Sources */,
 				F63176AE203C892B0076C098 /* MessagesController.swift in Sources */,
@@ -532,7 +528,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -586,7 +582,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

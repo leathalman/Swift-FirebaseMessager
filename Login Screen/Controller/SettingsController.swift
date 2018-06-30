@@ -1,49 +1,68 @@
 //
-//  SettingsController.swift
+//  TempSetting.swift
 //  Login Screen
 //
-//  Created by Harrison Leath on 6/9/18.
+//  Created by Harrison Leath on 6/29/18.
 //  Copyright © 2018 Harrison Leath. All rights reserved.
 //
 
 import UIKit
 import Firebase
 
-class SettingsController: UITableViewController {
+class SettingsController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var DarkisOn = Bool()
     let defaults = UserDefaults.standard
     
-    let cellId = "settingsCell"
+    private var tableView: UITableView!
+    
+    private let sections: NSArray = ["General", "Appearance"]
+    private let general: NSArray = ["Account", "orange", "banana", "strawberry", "lemon"]
+    private let other: NSArray = ["Dark Mode"]
+    
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+       
         navigationItem.title = "Settings"
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleDismiss))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
-        self.tableView.backgroundColor = UIColor.white
+        let barHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
+        let navigationBarHeight: CGFloat = self.navigationController!.navigationBar.frame.size.height
+        let displayWidth: CGFloat = self.view.frame.width
+        let displayHeight: CGFloat = self.view.frame.height
+        
+        view.backgroundColor = UIColor.white
+        
+        tableView = UITableView(frame: CGRect(x: 0, y: barHeight+navigationBarHeight, width: displayWidth, height: displayHeight - (barHeight+navigationBarHeight)))
+        tableView.register(SettingsCell.self, forCellReuseIdentifier: "SettingsCell")
+        tableView.register(SettingsSwitchCell.self, forCellReuseIdentifier: "SettingsSwitchCell")
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        self.view.addSubview(tableView)
         
         setupNotificationsForDarkTheme()
-        setupDetectButtonPosition()
-        darkModeSwitched(darkModeSwitch)
+        detectDarkMode()
     }
     
-    let darkModeSwitch: UISwitch = {
-        let toggle = UISwitch()
-        toggle.addTarget(self, action: #selector(darkModeSwitched(_:)), for: .touchUpInside)
-        
-        return toggle
-    }()
+    override func viewDidAppear(_ animated: Bool) {
+        detectDarkMode()
+    }
     
-    private func setupDetectButtonPosition() {
+    func detectDarkMode() {
         let darkModeEnabled = defaults.bool(forKey: "DarkDefault")
         
         if darkModeEnabled {
-            darkModeSwitch.setOn(true, animated: true)
+            //dark mode enabled "DarkDefault"
+            
         } else {
-            darkModeSwitch.setOn(false, animated: true)
+            //light mode enabled "LightDefault"
+            
         }
+        
     }
     
     func setupNotificationsForDarkTheme() {
@@ -53,68 +72,110 @@ class SettingsController: UITableViewController {
     
     @objc private func darkModeEnabled(_ notification: Notification) {
         // Write your dark mode code here
-        tableView.backgroundColor = Colors.lighterDarkBlue
-        
+        print("dark - on")
+        tableView.backgroundColor = UIColor.black
     }
     
     @objc private func darkModeDisabled(_ notification: Notification) {
         // Write your non-dark mode code here
-        tableView.backgroundColor = Colors.white
-
+        print("light - off")
+        tableView.backgroundColor = UIColor.white
     }
     
-    @objc func darkModeSwitched(_ sender: Any) {
-        
-        if darkModeSwitch.isOn == true {
-            
-            //enable dark mode
-            print("switched to dark")
-            
+    @objc func darkModeSwitched(_ sender: UISwitch) {
+
+        if sender.isOn == true {
+
+            print("dark enabled")
+
             DarkisOn = true
-            
+
             defaults.set(true, forKey: "DarkDefault")
             defaults.set(false, forKey: "LightDefault")
-            
-            // Post the notification to let all current view controllers that the app has changed to dark mode, and they should theme themselves to reflect this change.
+
             NotificationCenter.default.post(name: .darkModeEnabled, object: nil)
-            
+
         } else {
-            
-            //enable light mode
-            print("switched to light")
-            
+
+            print("light enabled")
+
             DarkisOn = false
-            
+
             defaults.set(false, forKey: "DarkDefault")
             defaults.set(true, forKey: "LightDefault")
 
-            // Post the notification to let all current view controllers that the app has changed to non-dark mode, and they should theme themselves to reflect this change.
             NotificationCenter.default.post(name: .darkModeDisabled, object: nil)
+            
         }
+
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int{
+        return sections.count
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section] as? String
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+//        print("Num: \(indexPath.row)")
+//        if indexPath.section == 0 {
+//            print("Value: \(general[indexPath.row])")
+//        } else if indexPath.section == 1 {
+//            print("Value: \(other[indexPath.row])")
+//        }
     }
     
-    @objc func handleDismiss() {
-        dismiss(animated: true, completion: nil)
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return general.count
+        } else if section == 1 {
+            return other.count
+        } else {
+            return 0
+        }
     }
     
-    let Items = ["This will be populated with user data later","Test 1","Test 2"]
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.Items.count
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                
+        if indexPath.section == 0 {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsCell
+            
+            cell.labelText.text = "\(general[indexPath.row])"
+            
+            return cell
+            
+        } else if indexPath.section == 1 {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsSwitchCell", for: indexPath) as! SettingsSwitchCell
+
+            cell.labelText.text = "\(other[indexPath.row])"
+            cell.selectionStyle =  UITableViewCell.SelectionStyle.none
+            cell.switchButton.addTarget(self, action: #selector(darkModeSwitched(_:)), for: .touchUpInside)
+            
+            let darkModeEnabled = defaults.bool(forKey: "DarkDefault")
+            
+            if darkModeEnabled {
+                cell.switchButton.setOn(true, animated: true)
+            } else {
+                cell.switchButton.setOn(false, animated: true)
+            }
+                        
+            return cell
+            
+        } else {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsCell
+
+            return cell
+        }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        cell.textLabel?.text = self.Items[indexPath.row]
-        
-        cell.addSubview(darkModeSwitch)
-        
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
     
     @objc func handleLogout() {
@@ -129,8 +190,12 @@ class SettingsController: UITableViewController {
         present(loginController, animated: true, completion: nil)
     }
     
+    @objc func handleDismiss() {
+        dismiss(animated: true, completion: nil)
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+    
 }
-

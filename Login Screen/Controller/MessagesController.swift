@@ -63,10 +63,11 @@ class MessagesController: UITableViewController {
         
         if darkModeEnabled {
             //dark mode enabled "DarkDefault"
+            darkTheme(tableView: tableView)
             
         } else {
             //light mode enabled "LightDefault"
-            
+            lightTheme(tableView: tableView)
         }
     }
     
@@ -95,11 +96,9 @@ class MessagesController: UITableViewController {
     }
     
     @objc func handleSettings() {
-        
         let settingsController = SettingsController()
         let navController = UINavigationController(rootViewController: settingsController)
         present(navController, animated: true, completion: nil)
-
     }
     
     var messages = [Message]()

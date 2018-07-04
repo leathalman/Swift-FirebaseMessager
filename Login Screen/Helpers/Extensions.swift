@@ -61,13 +61,6 @@ extension UICollectionView {
 }
 
 extension String {
-    /*
-     Truncates the string to the specified length number of characters and appends an optional trailing string if longer.
-     - Parameter length: Desired maximum lengths of a string
-     - Parameter trailing: A 'String' that will be appended after the truncation.
-     
-     - Returns: 'String' object.
-     */
     func trunc(length: Int, trailing: String = "…") -> String {
         return (self.count > length) ? self.prefix(length) + trailing : self
     }
@@ -80,6 +73,25 @@ extension NewMessageController: UISearchResultsUpdating {
 }
 
 extension Notification.Name {
-    static let darkModeEnabled = Notification.Name("com.yourApp.notifications.darkModeEnabled")
-    static let darkModeDisabled = Notification.Name("com.yourApp.notifications.darkModeDisabled")
+    static let darkModeEnabled = Notification.Name("com.chat.notifications.darkModeEnabled")
+    static let darkModeDisabled = Notification.Name("com.chat.notifications.darkModeDisabled")
+}
+
+extension UIViewController {
+    func darkTheme(tableView: UITableView) {
+        view.backgroundColor = Colors.lighterDarkBlue
+        tableView.backgroundColor = Colors.lighterDarkBlue
+        navigationController?.navigationBar.barTintColor = Colors.lighterDarkBlue
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.lightContent, animated: true)
+    }
+    
+    func lightTheme(tableView: UITableView) {
+        view.backgroundColor = UIColor.white
+        tableView.backgroundColor = UIColor.white
+        navigationController?.navigationBar.barTintColor = Colors.white
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.default, animated: true)
+
+    }
 }

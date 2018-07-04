@@ -23,7 +23,7 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
         navigationItem.title = "Settings"
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleDismiss))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
@@ -52,28 +52,12 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
         let darkModeEnabled = defaults.bool(forKey: "DarkDefault")
         
         if darkModeEnabled {
-            view.backgroundColor = Colors.lighterDarkBlue
-            tableView.backgroundColor = Colors.lighterDarkBlue
-            navigationController?.navigationBar.barTintColor = Colors.darkBlue
-            navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-
+            darkTheme(tableView: tableView)
+//            UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.lightContent, animated: true)
+            
         } else {
-            view.backgroundColor = UIColor.white
-            tableView.backgroundColor = UIColor.white
-            navigationController?.navigationBar.barTintColor = Colors.white
-            navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-
-        }
-    }
-    
-    //preferred statusbarstyle not working correctly
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        let darkModeEnabled = defaults.bool(forKey: "DarkDefualt")
-
-        if darkModeEnabled {
-            return .lightContent
-        } else {
-            return .default
+            lightTheme(tableView: tableView)
+//            UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.default, animated: true)
         }
     }
     
@@ -84,43 +68,40 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
     
     @objc private func darkModeEnabled(_ notification: Notification) {
         // Write your dark mode code here
-        print("dark - on")
+        print("dark")
         
-        view.backgroundColor = Colors.lighterDarkBlue
-        tableView.backgroundColor = Colors.lighterDarkBlue
-        navigationController?.navigationBar.barTintColor = Colors.darkBlue
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-
+        darkTheme(tableView: tableView)
+        detectDarkMode()
+        
         tableView.reloadData()
     }
     
     @objc private func darkModeDisabled(_ notification: Notification) {
         // Write your non-dark mode code here
-        print("light - off")
+        print("light")
         
-        view.backgroundColor = UIColor.white
-        tableView.backgroundColor = UIColor.white
-        navigationController?.navigationBar.barTintColor = Colors.white
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        lightTheme(tableView: tableView)
+        detectDarkMode()
+        
         tableView.reloadData()
     }
     
     @objc func darkModeSwitched(_ sender: UISwitch) {
-
+        
         if sender.isOn == true {
             
             DarkisOn = true
             defaults.set(true, forKey: "DarkDefault")
             defaults.set(false, forKey: "LightDefault")
-
+            
             NotificationCenter.default.post(name: .darkModeEnabled, object: nil)
-
+                        
         } else {
             
             DarkisOn = false
             defaults.set(false, forKey: "DarkDefault")
             defaults.set(true, forKey: "LightDefault")
-
+            
             NotificationCenter.default.post(name: .darkModeDisabled, object: nil)
         }
     }
@@ -128,19 +109,19 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
     func numberOfSections(in tableView: UITableView) -> Int{
         return sections.count
     }
-
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section] as? String
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-//        print("Num: \(indexPath.row)")
-//        if indexPath.section == 0 {
-//            print("Value: \(general[indexPath.row])")
-//        } else if indexPath.section == 1 {
-//            print("Value: \(other[indexPath.row])")
-//        }
+        //        print("Num: \(indexPath.row)")
+        //        if indexPath.section == 0 {
+        //            print("Value: \(general[indexPath.row])")
+        //        } else if indexPath.section == 1 {
+        //            print("Value: \(other[indexPath.row])")
+        //        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -156,7 +137,7 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let darkModeEnabled = defaults.bool(forKey: "DarkDefault")
-                
+        
         if indexPath.section == 0 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsCell
@@ -177,7 +158,7 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
         } else if indexPath.section == 1 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsSwitchCell", for: indexPath) as! SettingsSwitchCell
-
+            
             cell.labelText.text = "\(other[indexPath.row])"
             cell.selectionStyle =  UITableViewCell.SelectionStyle.none
             cell.switchButton.addTarget(self, action: #selector(darkModeSwitched(_:)), for: .touchUpInside)
@@ -192,7 +173,7 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
                 cell.backgroundColor = UIColor.white
                 cell.labelText.textColor = UIColor.black
             }
-                        
+            
             return cell
             
         } else {
@@ -207,7 +188,7 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
                 cell.backgroundColor = UIColor.white
                 cell.labelText.textColor = UIColor.black
             }
-
+            
             return cell
         }
     }

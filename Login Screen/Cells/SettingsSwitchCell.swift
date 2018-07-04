@@ -45,7 +45,7 @@ class SettingsSwitchCell: UITableViewCell {
         labelText.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -10).isActive = true
         labelText.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -10).isActive = true
         
-        switchButton.leftAnchor.constraint(equalTo: contentView.rightAnchor, constant: -60).isActive = true
+        switchButton.leftAnchor.constraint(equalTo: contentView.rightAnchor, constant: -70).isActive = true
         switchButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         switchButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switchButton.heightAnchor.constraint(equalToConstant: 30).isActive = true

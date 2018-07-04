@@ -137,7 +137,7 @@
 		F63176AA203C892B0076C098 /* Login Screen */ = {
 			isa = PBXGroup;
 			children = (
-				F68F118C20C330F1009E7A47 /* View */,
+				F68F118C20C330F1009E7A47 /* Cells */,
 				F6596634205D9F190077EA1B /* Helpers */,
 				F6BAD537203E4236003F7DE9 /* Model */,
 				F63176CC203C8B4A0076C098 /* Controller */,
@@ -182,7 +182,7 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		F68F118C20C330F1009E7A47 /* View */ = {
+		F68F118C20C330F1009E7A47 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				F68F118D20C330FB009E7A47 /* UserCell.swift */,
@@ -190,7 +190,7 @@
 				F665351320E70DB000BB7212 /* SettingsCell.swift */,
 				F665351720E7174200BB7212 /* SettingsSwitchCell.swift */,
 			);
-			path = View;
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		F6BAD537203E4236003F7DE9 /* Model */ = {
@@ -602,7 +602,7 @@
 				INFOPLIST_FILE = "Login Screen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Leathal.Login-Screen";
+				PRODUCT_BUNDLE_IDENTIFIER = Leathal.Chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -620,7 +620,7 @@
 				INFOPLIST_FILE = "Login Screen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Leathal.Login-Screen";
+				PRODUCT_BUNDLE_IDENTIFIER = Leathal.Chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;

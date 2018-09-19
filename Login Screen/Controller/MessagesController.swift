@@ -167,7 +167,23 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let darkModeEnabled = defaults.bool(forKey: "DarkDefault")
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
+        
+        if darkModeEnabled {
+            cell.backgroundColor = Colors.lighterDarkBlue
+            cell.textLabel?.textColor = UIColor.white
+            cell.timeLabel.textColor = UIColor.white
+            cell.detailTextLabel?.textColor = UIColor.white
+            
+        } else {
+            cell.backgroundColor = UIColor.white
+            cell.textLabel?.textColor = UIColor.black
+            cell.timeLabel.textColor = UIColor.black
+            cell.detailTextLabel?.textColor = UIColor.black
+        }
         
         let message = messages[indexPath.row]
         cell.message = message
@@ -210,8 +226,27 @@ class MessagesController: UITableViewController {
     
     @objc func handleNewMessage() {
         let newMessageController = NewMessageController()
-        newMessageController.messagesController = self
+//        newMessageController.messagesController = self
         let navController = UINavigationController(rootViewController: newMessageController)
+
+//        let darkModeEnabled = defaults.bool(forKey: "DarkDefault")
+//
+//        if darkModeEnabled {
+//            //dark mode enabled "DarkDefault"
+//            navController.navigationBar.barTintColor = Colors.lighterDarkBlue
+//
+//        } else {
+//            //light mode enabled "LightDefault"
+//            navController.navigationBar.barTintColor = UIColor.white
+//        }
+//
+        
+//        let settingsController = SettingsController()
+//        let navController = UINavigationController(rootViewController: settingsController)
+//        present(navController, animated: true, completion: nil)
+//
+//        navigationController?.pushViewController(newMessageController, animated: true)
+
         present(navController, animated: true, completion: nil)
     }
     
@@ -228,7 +263,7 @@ class MessagesController: UITableViewController {
     }
     
     func setupNavBarWithUser() {
-        //commented section to imprvove speed
+//        commented section to improve speed
 //        messages.removeAll()
 //        messagesDictionary.removeAll()
 //        tableView.reloadData()
@@ -250,6 +285,19 @@ class MessagesController: UITableViewController {
                 containerView.translatesAutoresizingMaskIntoConstraints = false
                 
                 let nameLabel = UILabel()
+                
+                let darkModeEnabled = self.defaults.bool(forKey: "DarkDefault")
+                
+                if darkModeEnabled {
+                    print("dark mode is enabled")
+                    nameLabel.textColor = UIColor.white
+                    
+                } else {
+                    print("light mode is enabled")
+                    nameLabel.textColor = UIColor.black
+
+                }
+                
                 nameLabel.text = name
                 nameLabel.translatesAutoresizingMaskIntoConstraints = false
                 

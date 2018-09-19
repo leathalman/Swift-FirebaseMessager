@@ -15,14 +15,21 @@ class NewMessageController: UITableViewController {
     var users = [myUser]()
     var filteredUsers = [myUser]()
     
+    let defaults = UserDefaults.standard
+    
+    override func viewDidAppear(_ animated: Bool) {
+        detectDarkMode()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         navigationItem.title = "New Message"
+        navigationController?.navigationBar.isTranslucent = false
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
-        
+
         let backButton = UIBarButtonItem()
         backButton.title = "Back"
         backButton.target = self
@@ -32,6 +39,21 @@ class NewMessageController: UITableViewController {
         setupSearchBar()
         fetchUsers()
         
+    }
+    
+    func detectDarkMode() {
+        let darkModeEnabled = defaults.bool(forKey: "DarkDefault")
+        
+        if darkModeEnabled {
+            //dark mode enabled "DarkDefault"
+            darkTheme(tableView: tableView)
+            navigationController?.navigationBar.barTintColor = Colors.gray
+            view.backgroundColor = Colors.lighterDarkBlue
+
+        } else {
+            //light mode enabled "LightDefault"
+            lightTheme(tableView: tableView)
+        }
     }
 
     let searchController = UISearchController(searchResultsController: nil)
@@ -127,6 +149,21 @@ class NewMessageController: UITableViewController {
         }
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
+        
+        let darkModeEnabled = defaults.bool(forKey: "DarkDefault")
+        
+        if darkModeEnabled {
+            cell.backgroundColor = Colors.lighterDarkBlue
+            cell.textLabel?.textColor = UIColor.white
+            cell.timeLabel.textColor = UIColor.white
+            cell.detailTextLabel?.textColor = UIColor.white
+            
+        } else {
+            cell.backgroundColor = UIColor.white
+            cell.textLabel?.textColor = UIColor.black
+            cell.timeLabel.textColor = UIColor.black
+            cell.detailTextLabel?.textColor = UIColor.black
+        }
         
         if let imageURL = user.profileImageUrl {
             

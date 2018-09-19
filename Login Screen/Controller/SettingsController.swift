@@ -17,7 +17,7 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
     private var tableView: UITableView!
     
     private let sections: NSArray = ["General", "Appearance"]
-    private let general: NSArray = ["Account", "orange", "banana", "strawberry", "lemon"]
+    private let general: NSArray = ["Setting 1", "Setting 2", "Setting 3", "Setting 4", "Setting 5"]
     private let other: NSArray = ["Dark Mode"]
     
     
@@ -53,11 +53,8 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
         
         if darkModeEnabled {
             darkTheme(tableView: tableView)
-//            UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.lightContent, animated: true)
-            
         } else {
             lightTheme(tableView: tableView)
-//            UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.default, animated: true)
         }
     }
     
@@ -226,6 +223,9 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @objc func handleDismiss() {
+        let messagesController = MessagesController()
+        messagesController.detectDarkMode()
+//        messagesController.handleReloadTable()
         dismiss(animated: true, completion: nil)
     }
     

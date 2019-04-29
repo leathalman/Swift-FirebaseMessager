@@ -42,7 +42,7 @@ class MessagesController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "settingsIcon"), style: .plain, target: self, action: #selector(handleSettings))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "menuIcon"), style: .plain, target: self, action: #selector(handleSettings))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "newMessageIcon"), style: .plain, target: self, action: #selector(handleNewMessage))
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismiss))
         
@@ -92,7 +92,7 @@ class MessagesController: UITableViewController {
     
     @objc func handleSwipeRight(_ sender: UITapGestureRecognizer) {
         handleSettings()
-        print("left swipe activated")
+        print("right swipe activated")
     }
     
     @objc func handleSettings() {
@@ -289,11 +289,11 @@ class MessagesController: UITableViewController {
                 let darkModeEnabled = self.defaults.bool(forKey: "DarkDefault")
                 
                 if darkModeEnabled {
-                    print("dark mode is enabled")
+                    //print("dark mode is enabled")
                     nameLabel.textColor = UIColor.white
                     
                 } else {
-                    print("light mode is enabled")
+                    //print("light mode is enabled")
                     nameLabel.textColor = UIColor.black
 
                 }

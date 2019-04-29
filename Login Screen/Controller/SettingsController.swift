@@ -16,8 +16,8 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
     
     private var tableView: UITableView!
     
-    private let sections: NSArray = ["General", "Appearance"]
-    private let general: NSArray = ["Setting 1", "Setting 2", "Setting 3", "Setting 4", "Setting 5"]
+    private let sections: NSArray = ["Account", "Appearance"]
+    private let general: NSArray = ["Profile Image", "Setting 2", "Setting 3", "Setting 4", "Setting 5"]
     private let other: NSArray = ["Dark Mode"]
     
     
@@ -112,13 +112,12 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        //        print("Num: \(indexPath.row)")
-        //        if indexPath.section == 0 {
-        //            print("Value: \(general[indexPath.row])")
-        //        } else if indexPath.section == 1 {
-        //            print("Value: \(other[indexPath.row])")
-        //        }
+//        print("Num: \(indexPath.row)")
+//        if indexPath.section == 0 {
+//            print("Value: \(general[indexPath.row])")
+//        } else if indexPath.section == 1 {
+//            print("Value: \(other[indexPath.row])")
+//        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -227,6 +226,11 @@ class SettingsController: UIViewController, UITableViewDelegate, UITableViewData
         messagesController.detectDarkMode()
 //        messagesController.handleReloadTable()
         dismiss(animated: true, completion: nil)
+    }
+    
+    func changeProfileImage() {
+        
+        print("profile image prompted")
     }
     
     deinit {
